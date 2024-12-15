@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/lots', [BlockController::class, 'index'])->name('blocks.index');
+    Route::post('/blocks/store', [BlockController::class, 'store'])->name('blocks.store');
 });
 
 require __DIR__.'/auth.php';

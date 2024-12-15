@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Block;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreBlockRequest;
 
 class BlockController extends Controller
 {
@@ -28,15 +29,9 @@ class BlockController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreBlockRequest $request)
     {
-        $request->validate([
-            'control_number' => 'required',
-            'block_number' => 'required',
-            'name' => 'required'
-        ]);
-
-        Block::create($request);
+        Block::create($request->validated());
 
         return redirect()->back();
     }

@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Block extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['control_number', 'block_number', 'name'];
 }
