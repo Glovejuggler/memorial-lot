@@ -4,6 +4,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\BlockController;
+use App\Http\Controllers\LotController;
 use App\Http\Controllers\ProfileController;
 
 /*
@@ -35,8 +36,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/lots', [BlockController::class, 'index'])->name('blocks.index');
+    Route::get('/blocks', [BlockController::class, 'index'])->name('blocks.index');
     Route::post('/blocks/store', [BlockController::class, 'store'])->name('blocks.store');
+    Route::get('/blocks/{block}', [BlockController::class, 'show'])->name('blocks.show');
+
+    Route::post('/lots/store', [LotController::class, 'store'])->name('lots.store');
 });
 
 require __DIR__.'/auth.php';

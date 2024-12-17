@@ -11,10 +11,17 @@ class BlockController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $blocks = Block::query()
+                        ->withCount('lots')
+                        ->filter($request->only(['search']))
+                        ->orderBy('block_number')
+                        ->get();
+
         return inertia('Blocks/Index', [
-            'blocks' => Block::all()
+            'blocks' => $blocks,
+            'filters' => $request->only(['search']),
         ]);
     }
 
@@ -41,7 +48,10 @@ class BlockController extends Controller
      */
     public function show(Block $block)
     {
-        //
+        return inertia('Blocks/Show', [
+            'block' => $block,
+            'lots' => $block->lots
+        ]);
     }
 
     /**

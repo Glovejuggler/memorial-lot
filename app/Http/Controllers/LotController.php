@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreNewLotRequest;
 use App\Models\Lot;
 use Illuminate\Http\Request;
 
@@ -26,9 +27,11 @@ class LotController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreNewLotRequest $request)
     {
-        //
+        Lot::create($request->validated());
+
+        return redirect()->back();
     }
 
     /**

@@ -1,6 +1,10 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
 
+defineOptions({
+    layout: null,
+})
+
 defineProps({
     canLogin: {
         type: Boolean,

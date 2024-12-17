@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('lots', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id');
+            $table->foreignUuid('block_id');
+            $table->string('lot_number');
             $table->decimal('price', 11, 2);
             $table->string('owner')->nullable();
             $table->timestamps();
