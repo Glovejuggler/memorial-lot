@@ -1,6 +1,6 @@
 <script setup>
 import { Head, useForm, router } from '@inertiajs/vue3';
-import { ref, watch } from 'vue';
+import { nextTick, ref, watch } from 'vue';
 import Modal from '@/Components/Modal.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
@@ -12,6 +12,7 @@ const props = defineProps({
 })
 
 const createBlockModal = ref(false)
+const blockName = ref(null)
 const newBlock = useForm({
     name: '',
     control_number: '',
@@ -52,7 +53,11 @@ const submitNewBlock = () => {
             <div class="lg:flex justify-between items-center sticky top-0 dark:bg-gray-900 bg-gray-100 py-4">
                 <div>
                     <span class="dark:text-white text-lg font-bold mr-4">Blocks</span>
-                    <button @click="createBlockModal = true" class="bg-blue-500 px-4 text-sm rounded-md text-white hover:bg-blue-700 active:bg-blue-800 ease-in-out duration-200">Add new</button>
+                    <button @click="() => {
+                        createBlockModal = true
+
+                        nextTick(() => blockName.focus())
+                    }" class="bg-blue-500 px-4 text-sm rounded-md text-white hover:bg-blue-700 active:bg-blue-800 ease-in-out duration-200">Add new</button>
                 </div>
                 
                 <TextInput v-model="searchForm.search" type="text" class="lg:w-96 mt-4 lg:mt-0 w-full" placeholder="Search"/>
@@ -60,10 +65,11 @@ const submitNewBlock = () => {
 
             <!-- Blocks -->
             <div v-if="blocks.length" class="grid lg:grid-cols-4 grid-cols-1 mt-4 gap-4">
-                <div @click="router.get(route('blocks.show', block))" class="w-full lg:aspect-video rounded-md bg-white dark:bg-gray-800 p-4 dark:text-white flex flex-col cursor-pointer dark:hover:bg-gray-700 ease-in-out duration-200" v-for="block in blocks">
-                    <span>Name: {{ block.name + ` (${block.lots_count})` }}</span>
+                <div @click="router.get(route('blocks.show', block))" class="w-full lg:aspect-video rounded-md border dark:border-gray-700 bg-white dark:bg-gray-800 p-4 dark:text-white flex flex-col cursor-pointer hover:shadow-md dark:hover:bg-gray-700 ease-in-out duration-200" v-for="block in blocks">
+                    <span>Name: {{ block.name }}</span>
                     <span>Control number: {{ block.control_number }}</span>
                     <span>Block number: {{ block.block_number }}</span>
+                    <span>Available lots: {{ block.lots_count - block.acquired_lots_count }}</span>
                 </div>
             </div>
 
@@ -74,10 +80,10 @@ const submitNewBlock = () => {
     </div>
 
     <!-- Create Block Modal -->
-    <Modal :show="createBlockModal">
+    <Modal :show="createBlockModal" @close="createBlockModal = false">
         <div class="p-4 dark:text-white">
             <InputLabel for="name" value="Block name"/>
-            <TextInput @keyup.enter="submitNewBlock" id="name" type="text" class="mt-1 block w-full" v-model="newBlock.name"/>
+            <TextInput ref="blockName" @keyup.enter="submitNewBlock" id="name" type="text" class="mt-1 block w-full" v-model="newBlock.name"/>
             <span v-if="errors.name" class="text-sm text-red-500">{{ errors.name }}</span>
             
             <InputLabel class="mt-4" for="control_number" value="Control number"/>

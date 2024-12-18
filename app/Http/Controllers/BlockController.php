@@ -15,6 +15,9 @@ class BlockController extends Controller
     {
         $blocks = Block::query()
                         ->withCount('lots')
+                        ->withCount(['lots as acquired_lots_count' => function ($q) {
+                            $q->whereNotNull('owner');
+                        }])
                         ->filter($request->only(['search']))
                         ->orderBy('block_number')
                         ->get();
@@ -65,9 +68,11 @@ class BlockController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Block $block)
+    public function update(StoreBlockRequest $request, Block $block)
     {
-        //
+        $block->update($request->validated());
+
+        return redirect()->back();
     }
 
     /**
@@ -75,6 +80,8 @@ class BlockController extends Controller
      */
     public function destroy(Block $block)
     {
-        //
+        $block->delete();
+
+        return redirect()->route('blocks.index');
     }
 }

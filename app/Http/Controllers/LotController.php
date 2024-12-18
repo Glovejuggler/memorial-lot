@@ -53,9 +53,11 @@ class LotController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Lot $lot)
+    public function update(StoreNewLotRequest $request, Lot $lot)
     {
-        //
+        $lot->update($request->validated());
+
+        return redirect()->back();
     }
 
     /**
@@ -63,6 +65,8 @@ class LotController extends Controller
      */
     public function destroy(Lot $lot)
     {
-        //
+        $lot->delete();
+
+        return redirect()->back();
     }
 }

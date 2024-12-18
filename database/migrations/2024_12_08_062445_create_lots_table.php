@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('lots', function (Blueprint $table) {
             $table->uuid('id');
-            $table->foreignUuid('block_id');
+            $table->foreignUuid('block_id')->constrained('blocks', 'id')->onDelete('cascade');
             $table->string('lot_number');
             $table->decimal('price', 11, 2);
             $table->string('owner')->nullable();
