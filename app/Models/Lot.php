@@ -10,5 +10,5 @@ class Lot extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['lot_number', 'block_id', 'price', 'owner'];
+    protected $fillable = ['lot_number', 'control_number', 'block_id', 'price', 'owner'];
 }

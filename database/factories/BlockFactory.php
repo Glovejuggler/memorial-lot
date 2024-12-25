@@ -18,7 +18,6 @@ class BlockFactory extends Factory
     {
         return [
             'name' => fake()->unique()->lastName(),
-            'control_number' => fake()->word().'-'.fake()->randomNumber(3, true),
             'block_number' => fake()->randomNumber(),
         ];
     }

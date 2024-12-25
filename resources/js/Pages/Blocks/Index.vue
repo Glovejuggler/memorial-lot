@@ -15,7 +15,6 @@ const createBlockModal = ref(false)
 const blockName = ref(null)
 const newBlock = useForm({
     name: '',
-    control_number: '',
     block_number: '',
 })
 
@@ -67,7 +66,6 @@ const submitNewBlock = () => {
             <div v-if="blocks.length" class="grid lg:grid-cols-4 grid-cols-1 mt-4 gap-4">
                 <div @click="router.get(route('blocks.show', block))" class="w-full lg:aspect-video rounded-md border dark:border-gray-700 bg-white dark:bg-gray-800 p-4 dark:text-white flex flex-col cursor-pointer hover:shadow-md dark:hover:bg-gray-700 ease-in-out duration-200" v-for="block in blocks">
                     <span>Name: {{ block.name }}</span>
-                    <span>Control number: {{ block.control_number }}</span>
                     <span>Block number: {{ block.block_number }}</span>
                     <span>Available lots: {{ block.lots_count - block.acquired_lots_count }}</span>
                 </div>
@@ -85,10 +83,6 @@ const submitNewBlock = () => {
             <InputLabel for="name" value="Block name"/>
             <TextInput ref="blockName" @keyup.enter="submitNewBlock" id="name" type="text" class="mt-1 block w-full" v-model="newBlock.name"/>
             <span v-if="errors.name" class="text-sm text-red-500">{{ errors.name }}</span>
-            
-            <InputLabel class="mt-4" for="control_number" value="Control number"/>
-            <TextInput @keyup.enter="submitNewBlock" id="control_number" type="text" class="mt-1 block w-full" v-model="newBlock.control_number"/>
-            <span v-if="errors.control_number" class="text-sm text-red-500 mt-0">{{ errors.control_number }}</span>
             
             <InputLabel class="mt-4" for="block_number" value="Block number"/>
             <TextInput @keyup.enter="submitNewBlock" id="block_number" type="text" class="mt-1 block w-full" v-model="newBlock.block_number"/>

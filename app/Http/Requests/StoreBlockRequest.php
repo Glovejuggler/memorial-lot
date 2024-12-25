@@ -23,7 +23,6 @@ class StoreBlockRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'control_number' => 'required',
             'block_number' => 'required',
         ];
     }

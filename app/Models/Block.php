@@ -11,14 +11,13 @@ class Block extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['control_number', 'block_number', 'name', 'uuid'];
+    protected $fillable = ['block_number', 'name', 'uuid'];
 
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $query->where('control_number', 'like', "%$search%")
-                        ->orWhere('block_number', 'like', "%$search%")
+                $query->where('block_number', 'like', "%$search%")
                         ->orWhere('name', 'like', "%$search%");
             });
         });

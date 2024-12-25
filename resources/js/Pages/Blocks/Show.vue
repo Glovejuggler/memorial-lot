@@ -20,13 +20,13 @@ const deleteLotModal = ref(false)
 
 const editBlockForm = useForm({
     name: props.block.name,
-    control_number: props.block.control_number,
     block_number: props.block.block_number
 })
 
 const newLot = useForm({
     block_id: props.block.id,
     lot_number: '',
+    control_number: '',
     price: '',
     owner: '',
 })
@@ -34,6 +34,7 @@ const newLot = useForm({
 const editLotForm = useForm({
     block_id: props.block.id,
     lot_number: '',
+    control_number: '',
     price: '',
     owner: '',
     id: '',
@@ -56,6 +57,7 @@ const submitEditBlock = () => {
 const editLot = (lot) => {
     editLotForm.id = lot.id
     editLotForm.lot_number = lot.lot_number
+    editLotForm.control_number = lot.control_number
     editLotForm.price = lot.price
     editLotForm.owner = lot.owner
     editLotForm.block_id = props.block.id
@@ -88,7 +90,6 @@ const deleteLot = (lot) => {
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 p-6 rounded-md dark:text-white border dark:border-gray-700 shadow-sm">
                 <p class="text-3xl font-bold mb-4">{{ block.name }}</p>
-                <p class="text-sm">Control number: {{ block.control_number }}</p>
                 <p class="text-sm">Block number: {{ block.block_number }}</p>
 
                 <div class="flex mt-4 space-x-2">
@@ -120,7 +121,11 @@ const deleteLot = (lot) => {
     <!-- New Lot Modal -->
     <Modal :show="createLotModal" :closeable="false">
         <div class="p-4 dark:text-white">
-            <InputLabel for="lot_number" value="Lot number"/>
+            <InputLabel for="control_number" value="Control number"/>
+            <TextInput @keyup.enter="submitNewLot" id="control_number" type="text" class="mt-1 block w-full" v-model="newLot.control_number"/>
+            <span v-if="errors.control_number" class="text-sm text-red-500">{{ errors.control_number }}</span>
+            
+            <InputLabel class="mt-4" for="lot_number" value="Lot number"/>
             <TextInput @keyup.enter="submitNewLot" id="lot_number" type="text" class="mt-1 block w-full" v-model="newLot.lot_number"/>
             <span v-if="errors.lot_number" class="text-sm text-red-500">{{ errors.lot_number }}</span>
             
@@ -145,10 +150,6 @@ const deleteLot = (lot) => {
             <InputLabel for="name" value="Block name"/>
             <TextInput @keyup.enter="submitEditBlock" id="name" type="text" class="mt-1 block w-full" v-model="editBlockForm.name"/>
             <span v-if="errors.name" class="text-sm text-red-500">{{ errors.name }}</span>
-            
-            <InputLabel class="mt-4" for="control_number" value="Control number"/>
-            <TextInput @keyup.enter="submitEditBlock" id="control_number" type="text" class="mt-1 block w-full" v-model="editBlockForm.control_number"/>
-            <span v-if="errors.control_number" class="text-sm text-red-500 mt-0">{{ errors.control_number }}</span>
             
             <InputLabel class="mt-4" for="block_number" value="Block number"/>
             <TextInput @keyup.enter="submitEditBlock" id="block_number" type="text" class="mt-1 block w-full" v-model="editBlockForm.block_number"/>
@@ -178,7 +179,11 @@ const deleteLot = (lot) => {
     <!-- Edit Lot Modal -->
     <Modal :show="editLotModal" @close="editLotModal = false">
         <div class="p-4 dark:text-white">
-            <InputLabel for="lot_number" value="Lot number"/>
+            <InputLabel for="control_number" value="Control number"/>
+            <TextInput @keyup.enter="submitEditLot" id="control_number" type="text" class="mt-1 block w-full" v-model="editLotForm.control_number"/>
+            <span v-if="errors.control_number" class="text-sm text-red-500">{{ errors.control_number }}</span>
+
+            <InputLabel class="mt-4" for="lot_number" value="Lot number"/>
             <TextInput @keyup.enter="submitEditLot" id="lot_number" type="text" class="mt-1 block w-full" v-model="editLotForm.lot_number"/>
             <span v-if="errors.lot_number" class="text-sm text-red-500">{{ errors.lot_number }}</span>
             

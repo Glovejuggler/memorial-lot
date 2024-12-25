@@ -25,6 +25,7 @@ class StoreNewLotRequest extends FormRequest
             'block_id' => 'required|uuid',
             'price' => 'required|numeric',
             'lot_number' => 'required',
+            'control_number' => 'required',
             'owner' => 'nullable'
         ];
     }
