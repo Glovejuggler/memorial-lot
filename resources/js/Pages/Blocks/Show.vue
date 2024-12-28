@@ -26,7 +26,7 @@ const editBlockForm = useForm({
 const newLot = useForm({
     block_id: props.block.id,
     lot_number: '',
-    control_number: '',
+    contract_number: '',
     price: '',
     owner: '',
 })
@@ -34,7 +34,7 @@ const newLot = useForm({
 const editLotForm = useForm({
     block_id: props.block.id,
     lot_number: '',
-    control_number: '',
+    contract_number: '',
     price: '',
     owner: '',
     id: '',
@@ -57,7 +57,7 @@ const submitEditBlock = () => {
 const editLot = (lot) => {
     editLotForm.id = lot.id
     editLotForm.lot_number = lot.lot_number
-    editLotForm.control_number = lot.control_number
+    editLotForm.contract_number = lot.contract_number
     editLotForm.price = lot.price
     editLotForm.owner = lot.owner
     editLotForm.block_id = props.block.id
@@ -105,9 +105,10 @@ const deleteLot = (lot) => {
 
             <div v-if="lots.length" class="grid lg:grid-cols-4 grid-cols-1 gap-4">
                 <div class="relative w-full lg:aspect-video rounded-md bg-white dark:bg-gray-800 p-4 dark:text-white flex flex-col cursor-pointer ease-in-out duration-200 border" :class="lot.owner ? 'border-blue-500' : 'border-green-500'" v-for="lot in lots">
+                    <span v-if="lot.contract_number">Contract Number: {{ lot.contract_number }}</span>
+                    <span v-if="lot.owner">Owner: {{ lot.owner }}</span>
                     <span>Lot number: {{ lot.lot_number }}</span>
                     <span>Price: {{ (Number) (lot.price).toAmountFormat() }}</span>
-                    <span v-if="lot.owner">Owner: {{ lot.owner }}</span>
 
                     <div class="absolute bottom-4 right-4 space-x-2 flex text-white">
                         <i @click="editLot(lot)" class="rounded-full bg-green-500 hover:bg-green-700 active:bg-green-900 duration-200 ease-in-out h-10 w-10 bx bx-edit inline-flex justify-center items-center"></i>
@@ -121,17 +122,17 @@ const deleteLot = (lot) => {
     <!-- New Lot Modal -->
     <Modal :show="createLotModal" :closeable="false">
         <div class="p-4 dark:text-white">
-            <InputLabel for="control_number" value="Control number"/>
-            <TextInput @keyup.enter="submitNewLot" id="control_number" type="text" class="mt-1 block w-full" v-model="newLot.control_number"/>
-            <span v-if="errors.control_number" class="text-sm text-red-500">{{ errors.control_number }}</span>
-            
-            <InputLabel class="mt-4" for="lot_number" value="Lot number"/>
+            <InputLabel for="lot_number" value="Lot number"/>
             <TextInput @keyup.enter="submitNewLot" id="lot_number" type="text" class="mt-1 block w-full" v-model="newLot.lot_number"/>
             <span v-if="errors.lot_number" class="text-sm text-red-500">{{ errors.lot_number }}</span>
             
             <InputLabel class="mt-4" for="price" value="Price"/>
             <TextInput @keyup.enter="submitNewLot" id="price" type="number" class="mt-1 block w-full" v-model="newLot.price"/>
             <span v-if="errors.price" class="text-sm text-red-500 mt-0">{{ errors.price }}</span>
+            
+            <InputLabel class="mt-4" for="contract_number" value="Contract number"/>
+            <TextInput @keyup.enter="submitNewLot" id="contract_number" type="text" class="mt-1 block w-full" v-model="newLot.contract_number"/>
+            <span v-if="errors.contract_number" class="text-sm text-red-500">{{ errors.contract_number }}</span>
 
             <InputLabel class="mt-4" for="owner" value="Owner"/>
             <TextInput @keyup.enter="submitNewLot" id="owner" type="text" class="mt-1 block w-full" v-model="newLot.owner"/>
@@ -179,17 +180,17 @@ const deleteLot = (lot) => {
     <!-- Edit Lot Modal -->
     <Modal :show="editLotModal" @close="editLotModal = false">
         <div class="p-4 dark:text-white">
-            <InputLabel for="control_number" value="Control number"/>
-            <TextInput @keyup.enter="submitEditLot" id="control_number" type="text" class="mt-1 block w-full" v-model="editLotForm.control_number"/>
-            <span v-if="errors.control_number" class="text-sm text-red-500">{{ errors.control_number }}</span>
-
-            <InputLabel class="mt-4" for="lot_number" value="Lot number"/>
+            <InputLabel for="lot_number" value="Lot number"/>
             <TextInput @keyup.enter="submitEditLot" id="lot_number" type="text" class="mt-1 block w-full" v-model="editLotForm.lot_number"/>
             <span v-if="errors.lot_number" class="text-sm text-red-500">{{ errors.lot_number }}</span>
             
             <InputLabel class="mt-4" for="price" value="Price"/>
             <TextInput @keyup.enter="submitEditLot" id="price" type="number" class="mt-1 block w-full" v-model="editLotForm.price"/>
             <span v-if="errors.price" class="text-sm text-red-500 mt-0">{{ errors.price }}</span>
+            
+            <InputLabel class="mt-4" for="contract_number" value="Contract number"/>
+            <TextInput @keyup.enter="submitEditLot" id="contract_number" type="text" class="mt-1 block w-full" v-model="editLotForm.contract_number"/>
+            <span v-if="errors.contract_number" class="text-sm text-red-500">{{ errors.contract_number }}</span>
 
             <InputLabel class="mt-4" for="owner" value="Owner"/>
             <TextInput @keyup.enter="submitEditLot" id="owner" type="text" class="mt-1 block w-full" v-model="editLotForm.owner"/>

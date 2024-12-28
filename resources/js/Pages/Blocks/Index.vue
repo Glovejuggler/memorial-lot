@@ -67,7 +67,7 @@ const submitNewBlock = () => {
                 <div @click="router.get(route('blocks.show', block))" class="w-full lg:aspect-video rounded-md border dark:border-gray-700 bg-white dark:bg-gray-800 p-4 dark:text-white flex flex-col cursor-pointer hover:shadow-md dark:hover:bg-gray-700 ease-in-out duration-200" v-for="block in blocks">
                     <span>Name: {{ block.name }}</span>
                     <span>Block number: {{ block.block_number }}</span>
-                    <span>Available lots: {{ block.lots_count - block.acquired_lots_count }}</span>
+                    <span>Occupied lots: {{ block.acquired_lots_count }}</span>
                 </div>
             </div>
 

@@ -23,7 +23,10 @@ const showingNavigationDropdown = ref(false);
                                     Dashboard
                                 </NavLink>
                                 <NavLink :href="route('blocks.index')" :active="route().current('blocks.*')">
-                                    Memorial
+                                    Blocks
+                                </NavLink>
+                                <NavLink :href="route('lots.index')" :active="route().current('lots.*')">
+                                    Lots
                                 </NavLink>
                             </div>
                         </div>
@@ -107,6 +110,9 @@ const showingNavigationDropdown = ref(false);
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('blocks.index')" :active="route().current('blocks.*')">
+                            Blocks
                         </ResponsiveNavLink>
                     </div>
 

@@ -20,12 +20,14 @@ use App\Http\Controllers\ProfileController;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    // return Inertia::render('Welcome', [
+    //     'canLogin' => Route::has('login'),
+    //     'canRegister' => Route::has('register'),
+    //     'laravelVersion' => Application::VERSION,
+    //     'phpVersion' => PHP_VERSION,
+    // ]);
+
+    return redirect()->route('login');
 });
 
 Route::get('/dashboard', function () {
@@ -45,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/block/{block}', [BlockController::class, 'update'])->name('blocks.update');
     Route::delete('/block/{block}', [BlockController::class, 'destroy'])->name('blocks.destroy');
 
+    Route::get('/lots', [LotController::class, 'index'])->name('lots.index');
     Route::post('/lots/store', [LotController::class, 'store'])->name('lots.store');
     Route::put('/lot/{lot}', [LotController::class, 'update'])->name('lots.update');
     Route::delete('/lot/{lot}', [LotController::class, 'destroy'])->name('lots.destroy');

@@ -11,9 +11,17 @@ class LotController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $lots = Lot::query()
+                        ->with('block')
+                        ->filter($request->only(['search']))
+                        ->get();
+
+        return inertia('Lots/Index', [
+            'lots' => $lots,
+            'filters' => $request->only(['search']),
+        ]);
     }
 
     /**
