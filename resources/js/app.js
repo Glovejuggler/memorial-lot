@@ -7,7 +7,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import AuthenticatedLayout from './Layouts/AuthenticatedLayout.vue';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'Southlane Realty & Dev\'t Corp.';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
