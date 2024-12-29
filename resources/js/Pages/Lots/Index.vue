@@ -140,7 +140,7 @@ const deleteLot = (lot) => {
                                     {{ lot.lot_number }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ lot.price.toAmountFormat() }}
+                                    {{ (Number) (lot.price).toAmountFormat() }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="space-x-2">
