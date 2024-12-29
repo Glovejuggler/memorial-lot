@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreNewLotRequest;
 use App\Models\Lot;
+use App\Models\Block;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreNewLotRequest;
 
 class LotController extends Controller
 {
@@ -21,6 +22,7 @@ class LotController extends Controller
         return inertia('Lots/Index', [
             'lots' => $lots,
             'filters' => $request->only(['search']),
+            'blocks' => Block::orderBy('block_number')->get(),
         ]);
     }
 

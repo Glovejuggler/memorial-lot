@@ -103,18 +103,56 @@ const deleteLot = (lot) => {
                 <button @click="createLotModal = true" class="bg-blue-500 px-4 text-sm rounded-md text-white hover:bg-blue-700 active:bg-blue-800 ease-in-out duration-200">Add new</button>
             </div>
 
-            <div v-if="lots.length" class="grid lg:grid-cols-4 grid-cols-1 gap-4">
-                <div class="relative w-full lg:aspect-video rounded-md bg-white dark:bg-gray-800 p-4 dark:text-white flex flex-col cursor-pointer ease-in-out duration-200 border" :class="lot.owner ? 'border-blue-500' : 'border-green-500'" v-for="lot in lots">
-                    <span v-if="lot.contract_number">Contract Number: {{ lot.contract_number }}</span>
-                    <span v-if="lot.owner">Owner: {{ lot.owner }}</span>
-                    <span>Lot number: {{ lot.lot_number }}</span>
-                    <span>Price: {{ (Number) (lot.price).toAmountFormat() }}</span>
-
-                    <div class="absolute bottom-4 right-4 space-x-2 flex text-white">
-                        <i @click="editLot(lot)" class="rounded-full bg-green-500 hover:bg-green-700 active:bg-green-900 duration-200 ease-in-out h-10 w-10 bx bx-edit inline-flex justify-center items-center"></i>
-                        <i @click="deleteLot(lot)" class="rounded-full bg-red-500 hover:bg-red-700 active:bg-red-900 duration-200 ease-in-out h-10 w-10 bx bx-trash inline-flex justify-center items-center"></i>
-                    </div>
+            <div v-if="lots.length" class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border dark:border-gray-700 mt-4">
+                <div class="relative overflow-x-auto rounded-lg">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-100">
+                        <thead class="text-xs text-gray-700 dark:text-gray-200 uppercase bg-gray-50 dark:bg-gray-800">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Contract Number
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Owner
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Lot Number
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Price
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="lot in lots" class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 last:border-none hover:bg-black/10 cursor-pointer">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-gray-200 whitespace-nowrap">
+                                    {{ lot.contract_number ?? '-' }}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ lot.owner ?? '-' }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ lot.lot_number }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ lot.price.toAmountFormat() }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="space-x-2">
+                                        <i @click="editLot(lot)" class="bx bx-edit w-8 h-8 rounded-full bg-green-500 hover:bg-green-700 active:bg-green-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
+                                        <i @click="deleteLot(lot)" class="bx bx-trash w-8 h-8 rounded-full bg-red-500 hover:bg-red-700 active:bg-red-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
+
+            <div v-else class="flex justify-center mt-12 dark:text-gray-400 text-gray-700">
+                <span>No data.</span>
             </div>
         </div>
     </div>

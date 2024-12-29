@@ -49,7 +49,7 @@ const submitNewBlock = () => {
     
     <div class="pt-4 pb-8">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="lg:flex justify-between items-center sticky top-0 dark:bg-gray-900 bg-gray-100 py-4">
+            <div class="lg:flex justify-between items-center sticky top-0 z-50 dark:bg-gray-900 bg-gray-100 py-4">
                 <div>
                     <span class="dark:text-white text-lg font-bold mr-4">Blocks</span>
                     <button @click="() => {
@@ -63,11 +63,36 @@ const submitNewBlock = () => {
             </div>
 
             <!-- Blocks -->
-            <div v-if="blocks.length" class="grid lg:grid-cols-4 grid-cols-1 mt-4 gap-4">
-                <div @click="router.get(route('blocks.show', block))" class="w-full lg:aspect-video rounded-md border dark:border-gray-700 bg-white dark:bg-gray-800 p-4 dark:text-white flex flex-col cursor-pointer hover:shadow-md dark:hover:bg-gray-700 ease-in-out duration-200" v-for="block in blocks">
-                    <span>Name: {{ block.name }}</span>
-                    <span>Block number: {{ block.block_number }}</span>
-                    <span>Occupied lots: {{ block.acquired_lots_count }}</span>
+            <div v-if="blocks.length" class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border dark:border-gray-700 mt-4 z-10">
+                <div class="relative overflow-x-auto rounded-lg">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-100">
+                        <thead class="text-xs text-gray-700 dark:text-gray-200 uppercase bg-gray-50 dark:bg-gray-800">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Block Number
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Occupied Lots
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="block in blocks" @click="router.get(route('blocks.show', block))" class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 last:border-none hover:bg-black/10 cursor-pointer">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-gray-200 whitespace-nowrap">
+                                    {{ block.name }}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ block.block_number }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ block.acquired_lots_count }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
