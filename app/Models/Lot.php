@@ -24,7 +24,10 @@ class Lot extends Model
             $query->where(function ($query) use ($search) {
                 $query->where('contract_number', 'like', "%$search%")
                         ->orWhere('lot_number', 'like', "%$search%")
-                        ->orWhere('owner', 'like', "%$search%");
+                        ->orWhere('owner', 'like', "%$search%")
+                        ->orWhereHas('block', function ($q) use ($search) {
+                            $q->where('block_number','like', "%$search%");
+                        });
             });
         });
     }
