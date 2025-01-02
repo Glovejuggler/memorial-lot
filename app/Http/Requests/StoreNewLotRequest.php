@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreNewLotRequest extends FormRequest
@@ -24,7 +25,9 @@ class StoreNewLotRequest extends FormRequest
         return [
             'block_id' => 'required|uuid',
             'price' => 'required|numeric',
-            'lot_number' => 'required|unique:lots,lot_number,'.$this->id,
+            'lot_number' => ['required', Rule::unique('lots', 'lot_number')->where(function ($query) {
+                $query->where('block_id', $this->block_id)->whereNot('id', $this->id);
+            })],
             'contract_number' => 'required',
             'owner' => 'required'
         ];
