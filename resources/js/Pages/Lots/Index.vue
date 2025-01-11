@@ -13,6 +13,7 @@ const props = defineProps({
     errors: Object,
 })
 
+// Search lot
 const searchForm = ref({
     search: props.filters.search
 })
@@ -31,6 +32,7 @@ watch(
     }
 )
 
+// Create lot
 const createLotModal = ref(false)
 const newLot = useForm({
     block_id: '',
@@ -47,6 +49,8 @@ const submitNewLot = () => {
     })
 }
 
+
+// Edit lot
 const editLotModal = ref(false)
 const editLotForm = useForm({
     block_id: '',
@@ -78,6 +82,7 @@ const submitEditLot = () => {
     })
 }
 
+// Delete lot
 const deleteLotModal = ref(false)
 const deleteLotVar = ref(null)
 const deleteLot = (lot) => {
@@ -85,10 +90,26 @@ const deleteLot = (lot) => {
 
     deleteLotModal.value = true
 }
+
+// File import
+const importFileInput = ref(null)
+const fileForm = useForm({
+    file: ''
+})
+const importLots = () => {
+    fileForm.post(route('lots.import'), {
+        preserveScroll: true,
+        preserveState: false,
+        onSuccess: () => fileForm.reset('file'),
+        onCancel: () => fileForm.reset('file')
+    })
+}
 </script>
 
 <template>
     <Head title="Lots"/>
+
+    <input @input="fileForm.file = $event.target.files[0]" @change="importLots" type="file" hidden name="import" id="import" ref="importFileInput" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
 
     <div class="py-8">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
@@ -96,6 +117,7 @@ const deleteLot = (lot) => {
                 <div>
                     <span class="dark:text-white text-lg font-bold mr-4">Lots</span>
                     <button @click="createLotModal = true" class="bg-blue-500 px-4 text-sm rounded-md text-white hover:bg-blue-700 active:bg-blue-800 ease-in-out duration-200">Add new</button>
+                    <button @click="importFileInput.click()" class="bg-green-500 px-4 text-sm rounded-md text-white hover:bg-green-700 active:bg-green-800 ease-in-out duration-200 ml-4">Import</button>
                 </div>
                 <TextInput v-model="searchForm.search" type="text" class="lg:w-96 lg:mt-0 w-full" placeholder="Search"/>
             </div>
@@ -144,8 +166,8 @@ const deleteLot = (lot) => {
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="space-x-2">
-                                        <i @click="editLot(lot)" class="bx bx-edit w-8 h-8 rounded-full bg-green-500 hover:bg-green-700 active:bg-green-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
-                                        <i @click="deleteLot(lot)" class="bx bx-trash w-8 h-8 rounded-full bg-red-500 hover:bg-red-700 active:bg-red-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
+                                        <i @click="editLot(lot)" class="bx bx-edit w-5 h-5 rounded-full bg-green-500 hover:bg-green-700 active:bg-green-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
+                                        <i @click="deleteLot(lot)" class="bx bx-trash w-5 h-5 rounded-full bg-red-500 hover:bg-red-700 active:bg-red-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
                                     </div>
                                 </td>
                             </tr>

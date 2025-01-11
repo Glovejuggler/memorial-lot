@@ -3,6 +3,8 @@ import { Head } from '@inertiajs/vue3';
 
 const props = defineProps({
     blocks: Number,
+    lots_sold: Number,
+    lots_available: Number,
 })
 </script>
 
@@ -15,6 +17,14 @@ const props = defineProps({
                 <div class="bg-white dark:bg-gray-800 dark:text-white rounded-md p-4 flex justify-between items-center">
                     <span>Blocks</span>
                     <span class="font-bold text-2xl">{{ blocks }}</span>
+                </div>
+                <div class="bg-white dark:bg-gray-800 dark:text-white rounded-md p-4 flex justify-between items-center">
+                    <span>Lots sold</span>
+                    <span class="font-bold text-2xl">{{ lots_sold }}</span>
+                </div>
+                <div class="bg-white dark:bg-gray-800 dark:text-white rounded-md p-4 flex justify-between items-center">
+                    <span>Lots available</span>
+                    <span class="font-bold text-2xl">{{ lots_available }}</span>
                 </div>
             </div>
         </div>

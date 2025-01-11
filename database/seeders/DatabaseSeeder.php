@@ -35,17 +35,17 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $lots = [342,703,0,920,0,227,0,795,50,0,56];
+        // $lots = [342,703,0,920,0,227,0,795,50,0,56];
 
-        for ($i = 0; $i < 11; $i++) {
-            $b = Block::where('block_number', $i+1)->first()->id;
+        // for ($i = 0; $i < 11; $i++) {
+        //     $b = Block::where('block_number', $i+1)->first()->id;
 
-            for ($j = 1; $j <= $lots[$i]; $j++) {
-                Lot::create([
-                    'lot_number' => $j,
-                    'block_id' => $b,
-                ]);
-            }
-        }
+        //     for ($j = 1; $j <= $lots[$i]; $j++) {
+        //         Lot::create([
+        //             'lot_number' => $j,
+        //             'block_id' => $b,
+        //         ]);
+        //     }
+        // }
     }
 }

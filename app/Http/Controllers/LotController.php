@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Lot;
 use App\Models\Block;
+use App\Imports\LotsImport;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\StoreNewLotRequest;
 
 class LotController extends Controller
@@ -76,6 +78,24 @@ class LotController extends Controller
     public function destroy(Lot $lot)
     {
         $lot->delete();
+
+        return redirect()->back();
+    }
+
+    /**
+     * Import
+     */
+    public function import(Request $request)
+    {
+        // dd($request->file('file'));
+
+        // Excel::import(new LotsImport, $request->file('file'));
+        $import = new LotsImport;
+        $import->import($request->file('file'));
+
+        // if ($import->failures()) {
+        //     dd($import->failures()[164]);
+        // }
 
         return redirect()->back();
     }

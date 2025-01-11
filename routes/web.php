@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Lot;
 use Inertia\Inertia;
 use App\Models\Block;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard', [
         'blocks' => Block::count(),
+        'lots_sold' => Lot::whereNotNull('owner')->count(),
+        'lots_available' => Lot::whereNull('owner')->count(),
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -51,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/lots/store', [LotController::class, 'store'])->name('lots.store');
     Route::put('/lot/{lot}', [LotController::class, 'update'])->name('lots.update');
     Route::delete('/lot/{lot}', [LotController::class, 'destroy'])->name('lots.destroy');
+    Route::post('/lot/import', [LotController::class, 'import'])->name('lots.import');
 });
 
 require __DIR__.'/auth.php';
