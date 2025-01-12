@@ -42,8 +42,8 @@ class LotsImport implements ToModel, WithValidation, WithHeadingRow, WithBatchIn
     {
         return [
             '*.blk' => ['required', Rule::in([1,2,3,4,5,6,7,8,9,10,11])],
-            '*.cn' => ['required','unique:lots,contract_number'],
-            '*.name' => ['required'],
+            '*.cn' => ['nullable','unique:lots,contract_number'],
+            '*.name' => ['nullable'],
             '*.lot' => ['required']
         ];
     }
