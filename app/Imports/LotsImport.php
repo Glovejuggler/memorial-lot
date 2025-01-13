@@ -28,23 +28,44 @@ class LotsImport implements ToModel, WithValidation, WithHeadingRow, WithBatchIn
     */
     public function model(array $row)
     {
-        return new Lot([
-            'block_id' => Block::where('block_number', $row['blk'])->first()->id,
+        $blockId = Block::where('block_number', $row['blk'])->first()->id;
+
+        $exists = Lot::where('block_id', $blockId)->where('lot_number', $row['lot'])->exists();
+
+        if (!$exists) {
+            return new Lot([
+                'block_id' => $blockId,
+                'contract_number' => $row['cn'],
+                'owner' => $row['name'],
+                'lot_number' => $row['lot'],
+                'price' => isset($row['price']) ?: 0,
+                'id' => Str::uuid(),
+                'contact' => isset($row['contact']) ?: null,
+                'address' => isset($row['address']) ?: null,
+            ]);
+        }
+
+        Lot::where('block_id', $blockId)->where('lot_number', $row['lot'])->first()->update([
             'contract_number' => $row['cn'],
             'owner' => $row['name'],
-            'lot_number' => $row['lot'],
-            'price' => 0,
-            'id' => Str::uuid(),
+            'price' => isset($row['price']) ?: 0,
+            'contact' => isset($row['contact']) ?: null,
+            'address' => isset($row['address']) ?: null,
         ]);
+
+        return null;
     }
 
     public function rules(): array
     {
         return [
-            '*.blk' => ['required', Rule::in([1,2,3,4,5,6,7,8,9,10,11])],
+            '*.blk' => ['required', 'exists:blocks,block_number'],
             '*.cn' => ['nullable','unique:lots,contract_number'],
             '*.name' => ['nullable'],
-            '*.lot' => ['required']
+            '*.lot' => ['required'],
+            '*.contact' => ['nullable'],
+            '*.address' => ['nullable'],
+            '*.price' => ['nullable']
         ];
     }
 

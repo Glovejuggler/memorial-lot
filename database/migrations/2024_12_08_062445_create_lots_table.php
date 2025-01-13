@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('contract_number')->nullable();
             $table->string('lot_number');
             $table->decimal('price', 11, 2)->nullable();
+            $table->string('address')->nullable();
+            $table->string('contact')->nullable();
             $table->string('owner')->nullable();
             $table->timestamps();
         });

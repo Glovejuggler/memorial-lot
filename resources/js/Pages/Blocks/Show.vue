@@ -29,6 +29,8 @@ const newLot = useForm({
     contract_number: '',
     price: '',
     owner: '',
+    address: '',
+    contact: ''
 })
 
 const editLotForm = useForm({
@@ -37,6 +39,8 @@ const editLotForm = useForm({
     contract_number: '',
     price: '',
     owner: '',
+    address: '',
+    contact: '',
     id: '',
 })
 
@@ -61,6 +65,8 @@ const editLot = (lot) => {
     editLotForm.price = lot.price
     editLotForm.owner = lot.owner
     editLotForm.block_id = props.block.id
+    editLotForm.address = lot.address
+    editLotForm.contact = lot.contact
 
     editLotModal.value = true
 }
@@ -175,6 +181,14 @@ const deleteLot = (lot) => {
             <InputLabel class="mt-4" for="owner" value="Owner"/>
             <TextInput @keyup.enter="submitNewLot" id="owner" type="text" class="mt-1 block w-full" v-model="newLot.owner"/>
             <span v-if="errors.owner" class="text-sm text-red-500 mt-0">{{ errors.owner }}</span>
+
+            <InputLabel class="mt-4" for="address" value="Address"/>
+            <TextInput @keyup.enter="submitNewLot" id="address" type="text" class="mt-1 block w-full" v-model="newLot.address"/>
+            <span v-if="errors.address" class="text-sm text-red-500 mt-0">{{ errors.address }}</span>
+
+            <InputLabel class="mt-4" for="contact" value="Contact no."/>
+            <TextInput @keyup.enter="submitNewLot" id="contact" type="text" class="mt-1 block w-full" v-model="newLot.contact"/>
+            <span v-if="errors.contact" class="text-sm text-red-500 mt-0">{{ errors.contact }}</span>
 
             <div class="mt-6 flex flex-col-reverse md:flex-row justify-end md:space-x-6">
                 <button @click="createLotModal = false" type="button" class="dark:text-white hover:underline md:mt-0 mt-4">Cancel</button>
