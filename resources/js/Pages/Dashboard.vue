@@ -12,7 +12,7 @@ const props = defineProps({
     <Head title="Dashboard" />
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-screen-2xl mx-auto sm:px-6 lg:px-8">
             <div class="grid grid-cols-4 gap-4">
                 <div class="bg-white dark:bg-gray-800 dark:text-white rounded-md p-4 flex justify-between items-center">
                     <span>Blocks</span>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lot;
 use App\Models\Block;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreBlockRequest;
@@ -49,11 +50,18 @@ class BlockController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Block $block)
+    public function show(Block $block, Request $request)
     {
+        $lots = Lot::query()
+                        ->whereBelongsTo($block)
+                        ->with('block')
+                        ->filter($request->only(['search', 'type']))
+                        ->get();
+
         return inertia('Blocks/Show', [
             'block' => $block,
-            'lots' => $block->lots
+            'lots' => $lots,
+            'filters' => $request->only(['search', 'type'])
         ]);
     }
 

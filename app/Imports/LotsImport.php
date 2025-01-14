@@ -36,7 +36,7 @@ class LotsImport implements ToModel, WithValidation, WithHeadingRow, WithBatchIn
             return new Lot([
                 'block_id' => $blockId,
                 'contract_number' => $row['cn'],
-                'owner' => $row['name'],
+                'owner' => $row['name'] ?? $row['name_of_purchaser'],
                 'lot_number' => $row['lot'],
                 'price' => isset($row['price']) ?: 0,
                 'id' => Str::uuid(),
@@ -47,7 +47,7 @@ class LotsImport implements ToModel, WithValidation, WithHeadingRow, WithBatchIn
 
         Lot::where('block_id', $blockId)->where('lot_number', $row['lot'])->first()->update([
             'contract_number' => $row['cn'],
-            'owner' => $row['name'],
+            'owner' => $row['name'] ?? $row['name_of_purchaser'],
             'price' => isset($row['price']) ?: 0,
             'contact' => isset($row['contact']) ?: null,
             'address' => isset($row['address']) ?: null,

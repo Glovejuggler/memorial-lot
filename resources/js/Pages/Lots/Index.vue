@@ -15,7 +15,8 @@ const props = defineProps({
 
 // Search lot
 const searchForm = ref({
-    search: props.filters.search
+    search: props.filters.search,
+    type: props.filters.type ?? '',
 })
 
 watch(
@@ -40,6 +41,8 @@ const newLot = useForm({
     contract_number: '',
     price: '',
     owner: '',
+    address: '',
+    contact: '',
 })
 
 const submitNewLot = () => {
@@ -59,6 +62,8 @@ const editLotForm = useForm({
     price: '',
     owner: '',
     id: '',
+    address: '',
+    contact: '',
 })
 
 const editLot = (lot) => {
@@ -68,6 +73,8 @@ const editLot = (lot) => {
     editLotForm.price = lot.price
     editLotForm.owner = lot.owner
     editLotForm.block_id = lot.block_id
+    editLotForm.address = lot.address
+    editLotForm.contact = lot.contact
 
     editLotModal.value = true
 }
@@ -112,14 +119,21 @@ const importLots = () => {
     <input @input="fileForm.file = $event.target.files[0]" @change="importLots" type="file" hidden name="import" id="import" ref="importFileInput" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
 
     <div class="py-8">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
             <div class="py-4 flex justify-between">
                 <div>
                     <span class="dark:text-white text-lg font-bold mr-4">Lots</span>
                     <button @click="createLotModal = true" class="bg-blue-500 px-4 text-sm rounded-md text-white hover:bg-blue-700 active:bg-blue-800 ease-in-out duration-200">Add new</button>
                     <button @click="importFileInput.click()" class="bg-green-500 px-4 text-sm rounded-md text-white hover:bg-green-700 active:bg-green-800 ease-in-out duration-200 ml-4">Import</button>
                 </div>
-                <TextInput v-model="searchForm.search" type="text" class="lg:w-96 lg:mt-0 w-full" placeholder="Search"/>
+                <div>
+                    <Select v-model="searchForm.type">
+                        <option value="">All</option>
+                        <option value="available">Available</option>
+                        <option value="occupied">Occupied</option>
+                    </Select>
+                    <TextInput v-model="searchForm.search" type="text" class="lg:w-96 lg:mt-0 w-full" placeholder="Search"/>
+                </div>
             </div>
 
             <div v-if="lots.length" class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border dark:border-gray-700 mt-4">
@@ -132,6 +146,12 @@ const importLots = () => {
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Owner
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Address
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Contact no.
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Block Number
@@ -156,6 +176,12 @@ const importLots = () => {
                                     {{ lot.owner ?? '-' }}
                                 </td>
                                 <td class="px-6 py-4">
+                                    {{ lot.address ?? '-' }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ lot.contact ?? '-' }}
+                                </td>
+                                <td class="px-6 py-4">
                                     {{ lot.block.block_number }}
                                 </td>
                                 <td class="px-6 py-4">
@@ -166,8 +192,8 @@ const importLots = () => {
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="space-x-2">
-                                        <i @click="editLot(lot)" class="bx bx-edit w-5 h-5 rounded-full bg-green-500 hover:bg-green-700 active:bg-green-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
-                                        <i @click="deleteLot(lot)" class="bx bx-trash w-5 h-5 rounded-full bg-red-500 hover:bg-red-700 active:bg-red-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
+                                        <i @click="editLot(lot)" class="bx bx-edit w-8 h-8 rounded-full bg-green-500 hover:bg-green-700 active:bg-green-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
+                                        <i @click="deleteLot(lot)" class="bx bx-trash w-8 h-8 rounded-full bg-red-500 hover:bg-red-700 active:bg-red-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
                                     </div>
                                 </td>
                             </tr>
@@ -207,6 +233,14 @@ const importLots = () => {
             <TextInput @keyup.enter="submitNewLot" id="owner" type="text" class="mt-1 block w-full" v-model="newLot.owner"/>
             <span v-if="errors.owner" class="text-sm text-red-500 mt-0">{{ errors.owner }}</span>
 
+            <InputLabel class="mt-4" for="address" value="Address"/>
+            <TextInput @keyup.enter="submitNewLot" id="address" type="text" class="mt-1 block w-full" v-model="newLot.address"/>
+            <span v-if="errors.address" class="text-sm text-red-500 mt-0">{{ errors.address }}</span>
+
+            <InputLabel class="mt-4" for="contact" value="Contact no."/>
+            <TextInput @keyup.enter="submitNewLot" id="contact" type="text" class="mt-1 block w-full" v-model="newLot.contact"/>
+            <span v-if="errors.contact" class="text-sm text-red-500 mt-0">{{ errors.contact }}</span>
+
             <div class="mt-6 flex flex-col-reverse md:flex-row justify-end md:space-x-6">
                 <button @click="createLotModal = false" type="button" class="dark:text-white hover:underline md:mt-0 mt-4">Cancel</button>
                 <button @click="submitNewLot" :disabled="newLot.processing" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 active:bg-green-900 ease-in-out duration-200 disabled:opacity-20">{{ newLot.processing ? 'Processing' : 'Submit' }}</button>
@@ -238,6 +272,14 @@ const importLots = () => {
             <InputLabel class="mt-4" for="owner" value="Owner"/>
             <TextInput @keyup.enter="submitEditLot" id="owner" type="text" class="mt-1 block w-full" v-model="editLotForm.owner"/>
             <span v-if="errors.owner" class="text-sm text-red-500 mt-0">{{ errors.owner }}</span>
+
+            <InputLabel class="mt-4" for="address" value="Address"/>
+            <TextInput @keyup.enter="submitEditLot" id="address" type="text" class="mt-1 block w-full" v-model="editLotForm.address"/>
+            <span v-if="errors.address" class="text-sm text-red-500 mt-0">{{ errors.address }}</span>
+
+            <InputLabel class="mt-4" for="contact" value="Contact no."/>
+            <TextInput @keyup.enter="submitEditLot" id="contact" type="text" class="mt-1 block w-full" v-model="editLotForm.contact"/>
+            <span v-if="errors.contact" class="text-sm text-red-500 mt-0">{{ errors.contact }}</span>
 
             <div class="mt-6 flex flex-col-reverse md:flex-row justify-end md:space-x-6">
                 <button @click="editLotModal = false" type="button" class="dark:text-white hover:underline md:mt-0 mt-4">Cancel</button>

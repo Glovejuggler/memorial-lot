@@ -18,12 +18,12 @@ class LotController extends Controller
     {
         $lots = Lot::query()
                         ->with('block')
-                        ->filter($request->only(['search']))
+                        ->filter($request->only(['search', 'type']))
                         ->get();
 
         return inertia('Lots/Index', [
             'lots' => $lots,
-            'filters' => $request->only(['search']),
+            'filters' => $request->only(['search', 'type']),
             'blocks' => Block::orderBy('block_number')->get(),
         ]);
     }

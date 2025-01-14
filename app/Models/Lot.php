@@ -29,6 +29,12 @@ class Lot extends Model
                             $q->where('block_number','like', "%$search%");
                         });
             });
+        })->when($filters['type'] ?? null, function ($query, $type) {
+            if ($type == 'occupied') {
+                $query->whereNotNull('owner');
+            } elseif ($type == 'available') {
+                $query->whereNull('owner');
+            }
         });
     }
 }

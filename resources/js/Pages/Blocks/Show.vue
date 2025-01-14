@@ -1,14 +1,16 @@
 <script setup>
 import { Head, router, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Modal from '@/Components/Modal.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
+import Select from '@/Components/Select.vue';
 
 const props = defineProps({
     block: Object,
     errors: Object,
     lots: Object,
+    filters: Object,
 })
 
 const createLotModal = ref(false)
@@ -87,13 +89,33 @@ const deleteLot = (lot) => {
 
     deleteLotModal.value = true
 }
+
+// Search lot
+const searchForm = ref({
+    search: props.filters.search,
+    type: props.filters.type ?? '',
+})
+
+watch(
+    searchForm,
+    (value) => {
+        router.get(route('blocks.show', props.block), value, {
+            preserveState: true,
+            preserveScroll: true,
+            replace: true
+        })
+    },
+    {
+        deep: true,
+    }
+)
 </script>
 
 <template>
     <Head :title="block.name"/>
 
     <div class="py-8">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 p-6 rounded-md dark:text-white border dark:border-gray-700 shadow-sm">
                 <p class="text-3xl font-bold mb-4">{{ block.name }}</p>
                 <p class="text-sm">Block number: {{ block.block_number }}</p>
@@ -104,9 +126,19 @@ const deleteLot = (lot) => {
                 </div>
             </div>
 
-            <div class="py-4">
-                <span class="dark:text-white text-lg font-bold mr-4">Lots</span>
-                <button @click="createLotModal = true" class="bg-blue-500 px-4 text-sm rounded-md text-white hover:bg-blue-700 active:bg-blue-800 ease-in-out duration-200">Add new</button>
+            <div class="py-4 flex justify-between">
+                <div>
+                    <span class="dark:text-white text-lg font-bold mr-4">Lots</span>
+                    <button @click="createLotModal = true" class="bg-blue-500 px-4 text-sm rounded-md text-white hover:bg-blue-700 active:bg-blue-800 ease-in-out duration-200">Add new</button>
+                </div>
+                <div>
+                    <Select v-model="searchForm.type">
+                        <option value="">All</option>
+                        <option value="available">Available</option>
+                        <option value="occupied">Occupied</option>
+                    </Select>
+                    <TextInput v-model="searchForm.search" type="text" class="lg:w-96 lg:mt-0 w-full" placeholder="Search"/>
+                </div>
             </div>
 
             <div v-if="lots.length" class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border dark:border-gray-700 mt-4">
@@ -119,6 +151,12 @@ const deleteLot = (lot) => {
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Owner
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Address
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Contact no.
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Lot Number
@@ -138,6 +176,12 @@ const deleteLot = (lot) => {
                                 </th>
                                 <td class="px-6 py-4">
                                     {{ lot.owner ?? '-' }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ lot.address ?? '-' }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ lot.contact ?? '-' }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ lot.lot_number }}
@@ -247,6 +291,14 @@ const deleteLot = (lot) => {
             <InputLabel class="mt-4" for="owner" value="Owner"/>
             <TextInput @keyup.enter="submitEditLot" id="owner" type="text" class="mt-1 block w-full" v-model="editLotForm.owner"/>
             <span v-if="errors.owner" class="text-sm text-red-500 mt-0">{{ errors.owner }}</span>
+
+            <InputLabel class="mt-4" for="address" value="Address"/>
+            <TextInput @keyup.enter="submitEditLot" id="address" type="text" class="mt-1 block w-full" v-model="editLotForm.address"/>
+            <span v-if="errors.address" class="text-sm text-red-500 mt-0">{{ errors.address }}</span>
+
+            <InputLabel class="mt-4" for="contact" value="Contact no."/>
+            <TextInput @keyup.enter="submitEditLot" id="contact" type="text" class="mt-1 block w-full" v-model="editLotForm.contact"/>
+            <span v-if="errors.contact" class="text-sm text-red-500 mt-0">{{ errors.contact }}</span>
 
             <div class="mt-6 flex flex-col-reverse md:flex-row justify-end md:space-x-6">
                 <button @click="editLotModal = false" type="button" class="dark:text-white hover:underline md:mt-0 mt-4">Cancel</button>
