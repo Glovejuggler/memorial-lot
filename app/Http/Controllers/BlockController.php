@@ -53,10 +53,10 @@ class BlockController extends Controller
     public function show(Block $block, Request $request)
     {
         $lots = Lot::query()
-                        ->whereBelongsTo($block)
-                        ->with('block')
-                        ->filter($request->only(['search', 'type']))
-                        ->get();
+                    ->whereBelongsTo($block)
+                    ->with('block')
+                    ->filter($request->only(['search', 'type']))
+                    ->get();
 
         return inertia('Blocks/Show', [
             'block' => $block,

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('contact')->nullable();
             $table->string('owner')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }

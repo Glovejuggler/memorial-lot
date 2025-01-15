@@ -35,22 +35,24 @@ class LotsImport implements ToModel, WithValidation, WithHeadingRow, WithBatchIn
         if (!$exists) {
             return new Lot([
                 'block_id' => $blockId,
-                'contract_number' => $row['cn'],
+                'contract_number' => $row['cn'] ?? null,
                 'owner' => $row['name'] ?? $row['name_of_purchaser'],
                 'lot_number' => $row['lot'],
-                'price' => isset($row['price']) ?: 0,
+                'price' => isset($row['price']) ? $row['price'] : 0,
                 'id' => Str::uuid(),
-                'contact' => isset($row['contact']) ?: null,
-                'address' => isset($row['address']) ?: null,
+                'contact' => isset($row['contact']) ? $row['contact'] : null,
+                'address' => isset($row['address']) ? $row['address'] : null,
+                'type' => isset($row['type']) ? $row['type'] : (isset($row['category']) ? $row['category'] : null),
             ]);
         }
 
         Lot::where('block_id', $blockId)->where('lot_number', $row['lot'])->first()->update([
-            'contract_number' => $row['cn'],
-            'owner' => $row['name'] ?? $row['name_of_purchaser'],
-            'price' => isset($row['price']) ?: 0,
-            'contact' => isset($row['contact']) ?: null,
-            'address' => isset($row['address']) ?: null,
+            'contract_number' => $row['cn'] ?? null,
+            'owner' => $row['name'] ?? $row['name_of_purchaser'] ?? null,
+            'price' => isset($row['price']) ? $row['price'] : 0,
+            'contact' => isset($row['contact']) ? $row['contact'] : null,
+            'address' => isset($row['address']) ? $row['address'] : null,
+            'type' => isset($row['type']) ? $row['type'] : (isset($row['category']) ? $row['category'] : null),
         ]);
 
         return null;
@@ -65,7 +67,8 @@ class LotsImport implements ToModel, WithValidation, WithHeadingRow, WithBatchIn
             '*.lot' => ['required'],
             '*.contact' => ['nullable'],
             '*.address' => ['nullable'],
-            '*.price' => ['nullable']
+            '*.price' => ['nullable'],
+            '*.type' => ['nullable'],
         ];
     }
 

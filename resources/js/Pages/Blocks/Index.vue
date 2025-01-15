@@ -69,10 +69,10 @@ const submitNewBlock = () => {
                         <thead class="text-xs text-gray-700 dark:text-gray-200 uppercase bg-gray-50 dark:bg-gray-800">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                    Name
+                                    Block Number
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Block Number
+                                    Name
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Occupied Lots
@@ -85,10 +85,10 @@ const submitNewBlock = () => {
                         <tbody>
                             <tr v-for="block in blocks" @click="router.get(route('blocks.show', block))" class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 last:border-none hover:bg-black/10 cursor-pointer">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-gray-200 whitespace-nowrap">
-                                    {{ block.name }}
+                                    {{ block.block_number }}
                                 </th>
                                 <td class="px-6 py-4">
-                                    {{ block.block_number }}
+                                    {{ block.name }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ block.acquired_lots_count }}

@@ -43,6 +43,7 @@ const newLot = useForm({
     owner: '',
     address: '',
     contact: '',
+    type: '',
 })
 
 const submitNewLot = () => {
@@ -64,6 +65,7 @@ const editLotForm = useForm({
     id: '',
     address: '',
     contact: '',
+    type: '',
 })
 
 const editLot = (lot) => {
@@ -75,6 +77,7 @@ const editLot = (lot) => {
     editLotForm.block_id = lot.block_id
     editLotForm.address = lot.address
     editLotForm.contact = lot.contact
+    editLotForm.type = lot.type
 
     editLotModal.value = true
 }
@@ -142,6 +145,15 @@ const importLots = () => {
                         <thead class="text-xs text-gray-700 dark:text-gray-200 uppercase bg-gray-50 dark:bg-gray-800">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
+                                    Block Number
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Lot Number
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Type
+                                </th>
+                                <th scope="col" class="px-6 py-3">
                                     Contract Number
                                 </th>
                                 <th scope="col" class="px-6 py-3">
@@ -154,12 +166,6 @@ const importLots = () => {
                                     Contact no.
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Block Number
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Lot Number
-                                </th>
-                                <th scope="col" class="px-6 py-3">
                                     Price
                                 </th>
                                 <th scope="col" class="px-6 py-3">
@@ -170,8 +176,17 @@ const importLots = () => {
                         <tbody>
                             <tr v-for="lot in lots" class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 last:border-none hover:bg-black/10 cursor-pointer">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-gray-200 whitespace-nowrap">
-                                    {{ lot.contract_number ?? '-' }}
+                                    {{ lot.block.block_number ?? '-' }}
                                 </th>
+                                <td class="px-6 py-4">
+                                    {{ lot.lot_number }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ lot.type ?? '-' }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ lot.block.contract_number ?? '-' }}
+                                </td>
                                 <td class="px-6 py-4">
                                     {{ lot.owner ?? '-' }}
                                 </td>
@@ -180,12 +195,6 @@ const importLots = () => {
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ lot.contact ?? '-' }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ lot.block.block_number }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ lot.lot_number }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ (Number) (lot.price).toAmountFormat() }}
@@ -216,6 +225,16 @@ const importLots = () => {
                 <option v-for="block in blocks" :value="block.id">{{ `${block.block_number} (${block.name})` }}</option>
             </Select>
             <span v-if="errors.block_id" class="text-sm text-red-500">{{ errors.block_id }}</span>
+
+            <InputLabel class="mt-4" for="type" value="Type/Category"/>
+            <Select @keyup.enter="submitNewLot" id="type" class="mt-1 block w-full" v-model="newLot.type">
+                <option value="" selected hidden disabled>Choose one</option>
+                <option value="Regular">Regular</option>
+                <option value="Premium">Premium</option>
+                <option value="Super Premium">Super Premium</option>
+                <option value="Super Special Premium">Super Special Premium</option>
+            </Select>
+            <span v-if="errors.type" class="text-sm text-red-500">{{ errors.type }}</span>
 
             <InputLabel class="mt-4" for="lot_number" value="Lot number"/>
             <TextInput @keyup.enter="submitNewLot" id="lot_number" type="text" class="mt-1 block w-full" v-model="newLot.lot_number"/>
@@ -256,6 +275,16 @@ const importLots = () => {
                 <option v-for="block in blocks" :value="block.id">{{ `${block.block_number} (${block.name})` }}</option>
             </Select>
             <span v-if="errors.block_id" class="text-sm text-red-500">{{ errors.block_id }}</span>
+
+            <InputLabel class="mt-4" for="type" value="Type/Category"/>
+            <Select @keyup.enter="submitEditLot" id="type" class="mt-1 block w-full" v-model="editLotForm.type">
+                <option value="" selected hidden disabled>Choose one</option>
+                <option value="Regular">Regular</option>
+                <option value="Premium">Premium</option>
+                <option value="Super Premium">Super Premium</option>
+                <option value="Super Special Premium">Super Special Premium</option>
+            </Select>
+            <span v-if="errors.type" class="text-sm text-red-500">{{ errors.type }}</span>
 
             <InputLabel class="mt-4" for="lot_number" value="Lot number"/>
             <TextInput @keyup.enter="submitEditLot" id="lot_number" type="text" class="mt-1 block w-full" v-model="editLotForm.lot_number"/>

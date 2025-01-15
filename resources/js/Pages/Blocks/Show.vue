@@ -27,6 +27,7 @@ const editBlockForm = useForm({
 
 const newLot = useForm({
     block_id: props.block.id,
+    type: '',
     lot_number: '',
     contract_number: '',
     price: '',
@@ -37,6 +38,7 @@ const newLot = useForm({
 
 const editLotForm = useForm({
     block_id: props.block.id,
+    type: '',
     lot_number: '',
     contract_number: '',
     price: '',
@@ -62,6 +64,7 @@ const submitEditBlock = () => {
 
 const editLot = (lot) => {
     editLotForm.id = lot.id
+    editLotForm.type = lot.type
     editLotForm.lot_number = lot.lot_number
     editLotForm.contract_number = lot.contract_number
     editLotForm.price = lot.price
@@ -147,6 +150,12 @@ watch(
                         <thead class="text-xs text-gray-700 dark:text-gray-200 uppercase bg-gray-50 dark:bg-gray-800">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
+                                    Lot Number
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Type
+                                </th>
+                                <th scope="col" class="px-6 py-3">
                                     Contract Number
                                 </th>
                                 <th scope="col" class="px-6 py-3">
@@ -159,9 +168,6 @@ watch(
                                     Contact no.
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Lot Number
-                                </th>
-                                <th scope="col" class="px-6 py-3">
                                     Price
                                 </th>
                                 <th scope="col" class="px-6 py-3">
@@ -172,8 +178,14 @@ watch(
                         <tbody>
                             <tr v-for="lot in lots" class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 last:border-none hover:bg-black/10 cursor-pointer">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-gray-200 whitespace-nowrap">
-                                    {{ lot.contract_number ?? '-' }}
+                                    {{ lot.lot_number }}
                                 </th>
+                                <td class="px-6 py-4">
+                                    {{ lot.type ?? '-' }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ lot.contract_number ?? '-' }}
+                                </td>
                                 <td class="px-6 py-4">
                                     {{ lot.owner ?? '-' }}
                                 </td>
@@ -182,9 +194,6 @@ watch(
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ lot.contact ?? '-' }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ lot.lot_number }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ (Number) (lot.price).toAmountFormat() }}
@@ -210,7 +219,17 @@ watch(
     <!-- New Lot Modal -->
     <Modal :show="createLotModal" :closeable="false">
         <div class="p-4 dark:text-white">
-            <InputLabel for="lot_number" value="Lot number"/>
+            <InputLabel for="type" value="Type"/>
+            <Select @keyup.enter="submitNewLot" id="type" type="text" class="mt-1 block w-full" v-model="newLot.type">
+                <option value="" selected hidden disabled>Choose one</option>
+                <option value="Regular">Regular</option>
+                <option value="Premium">Premium</option>
+                <option value="Super Premium">Super Premium</option>
+                <option value="Super Special Premium">Super Special Premium</option>
+            </Select>
+            <span v-if="errors.type" class="text-sm text-red-500">{{ errors.type }}</span>
+
+            <InputLabel class="mt-4" for="lot_number" value="Lot number"/>
             <TextInput @keyup.enter="submitNewLot" id="lot_number" type="text" class="mt-1 block w-full" v-model="newLot.lot_number"/>
             <span v-if="errors.lot_number" class="text-sm text-red-500">{{ errors.lot_number }}</span>
             
@@ -276,7 +295,17 @@ watch(
     <!-- Edit Lot Modal -->
     <Modal :show="editLotModal" @close="editLotModal = false">
         <div class="p-4 dark:text-white">
-            <InputLabel for="lot_number" value="Lot number"/>
+            <InputLabel for="type" value="Type"/>
+            <Select @keyup.enter="submitEditLot" id="type" type="text" class="mt-1 block w-full" v-model="editLotForm.type">
+                <option value="" selected hidden disabled>Choose one</option>
+                <option value="Regular">Regular</option>
+                <option value="Premium">Premium</option>
+                <option value="Super Premium">Super Premium</option>
+                <option value="Super Special Premium">Super Special Premium</option>
+            </Select>
+            <span v-if="errors.type" class="text-sm text-red-500">{{ errors.type }}</span>
+
+            <InputLabel class="mt-4" for="lot_number" value="Lot number"/>
             <TextInput @keyup.enter="submitEditLot" id="lot_number" type="text" class="mt-1 block w-full" v-model="editLotForm.lot_number"/>
             <span v-if="errors.lot_number" class="text-sm text-red-500">{{ errors.lot_number }}</span>
             

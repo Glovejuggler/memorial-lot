@@ -31,7 +31,8 @@ class StoreNewLotRequest extends FormRequest
             'contract_number' => 'required_with:owner',
             'owner' => 'required_with:contract_number',
             'address' => 'nullable',
-            'contact' => 'nullable'
+            'contact' => 'nullable',
+            'type' => 'nullable',
         ];
     }
 }
