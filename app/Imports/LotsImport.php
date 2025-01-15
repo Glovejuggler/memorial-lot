@@ -43,6 +43,7 @@ class LotsImport implements ToModel, WithValidation, WithHeadingRow, WithBatchIn
                 'contact' => isset($row['contact']) ? $row['contact'] : null,
                 'address' => isset($row['address']) ? $row['address'] : null,
                 'type' => isset($row['type']) ? $row['type'] : (isset($row['category']) ? $row['category'] : null),
+                'status' => $row['status'] ?: null,
             ]);
         }
 
@@ -55,6 +56,7 @@ class LotsImport implements ToModel, WithValidation, WithHeadingRow, WithBatchIn
             'contact' => isset($row['contact']) ? $row['contact'] : $existing->contact,
             'address' => isset($row['address']) ? $row['address'] : $existing->address,
             'type' => isset($row['type']) ? $row['type'] : (isset($row['category']) ? $row['category'] : $existing->type),
+            'status' => $row['status'] ?: $existing->status,
         ]);
 
         return null;

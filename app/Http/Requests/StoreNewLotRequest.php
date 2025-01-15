@@ -33,6 +33,7 @@ class StoreNewLotRequest extends FormRequest
             'address' => 'nullable',
             'contact' => 'nullable',
             'type' => 'nullable',
+            'status' => 'nullable',
         ];
     }
 }

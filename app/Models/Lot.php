@@ -11,7 +11,7 @@ class Lot extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['lot_number', 'contract_number', 'block_id', 'price', 'owner', 'id', 'address', 'contact', 'type'];
+    protected $fillable = ['lot_number', 'contract_number', 'block_id', 'price', 'owner', 'id', 'address', 'contact', 'type', 'status'];
 
     public function block(): BelongsTo
     {

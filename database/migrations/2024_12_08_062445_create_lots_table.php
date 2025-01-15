@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('contact')->nullable();
             $table->string('owner')->nullable();
             $table->string('type')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }
