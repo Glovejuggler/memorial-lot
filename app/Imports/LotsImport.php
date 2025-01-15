@@ -36,7 +36,7 @@ class LotsImport implements ToModel, WithValidation, WithHeadingRow, WithBatchIn
             return new Lot([
                 'block_id' => $blockId,
                 'contract_number' => $row['cn'] ?? null,
-                'owner' => $row['name'] ?? $row['name_of_purchaser'],
+                'owner' => $row['name'] ?? $row['name_of_purchaser'] ?? null,
                 'lot_number' => $row['lot'],
                 'price' => isset($row['price']) ? $row['price'] : 0,
                 'id' => Str::uuid(),
@@ -46,13 +46,15 @@ class LotsImport implements ToModel, WithValidation, WithHeadingRow, WithBatchIn
             ]);
         }
 
-        Lot::where('block_id', $blockId)->where('lot_number', $row['lot'])->first()->update([
-            'contract_number' => $row['cn'] ?? null,
-            'owner' => $row['name'] ?? $row['name_of_purchaser'] ?? null,
-            'price' => isset($row['price']) ? $row['price'] : 0,
-            'contact' => isset($row['contact']) ? $row['contact'] : null,
-            'address' => isset($row['address']) ? $row['address'] : null,
-            'type' => isset($row['type']) ? $row['type'] : (isset($row['category']) ? $row['category'] : null),
+        $existing = Lot::where('block_id', $blockId)->where('lot_number', $row['lot'])->first();
+        
+        $existing->update([
+            'contract_number' => $row['cn'] ?? $existing->contract_number,
+            'owner' => $row['name'] ?? $row['name_of_purchaser'] ?? $existing->owner,
+            'price' => isset($row['price']) ? $row['price'] : $existing->price,
+            'contact' => isset($row['contact']) ? $row['contact'] : $existing->contact,
+            'address' => isset($row['address']) ? $row['address'] : $existing->address,
+            'type' => isset($row['type']) ? $row['type'] : (isset($row['category']) ? $row['category'] : $existing->type),
         ]);
 
         return null;

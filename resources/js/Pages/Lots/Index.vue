@@ -144,62 +144,62 @@ const importLots = () => {
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-100">
                         <thead class="text-xs text-gray-700 dark:text-gray-200 uppercase bg-gray-50 dark:bg-gray-800">
                             <tr>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-3 py-3">
                                     Block Number
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-3 py-3">
                                     Lot Number
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-3 py-3">
                                     Type
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-3 py-3">
                                     Contract Number
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-3 py-3">
                                     Owner
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-3 py-3">
                                     Address
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-3 py-3">
                                     Contact no.
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-3 py-3">
                                     Price
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-3 py-3">
                                     Actions
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="lot in lots" class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 last:border-none hover:bg-black/10 cursor-pointer">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-gray-200 whitespace-nowrap">
+                                <th scope="row" class="px-3 py-4 font-medium text-gray-900 dark:text-gray-200 whitespace-nowrap">
                                     {{ lot.block.block_number ?? '-' }}
                                 </th>
-                                <td class="px-6 py-4">
+                                <td class="px-3 py-4">
                                     {{ lot.lot_number }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-3 py-4">
                                     {{ lot.type ?? '-' }}
                                 </td>
-                                <td class="px-6 py-4">
-                                    {{ lot.block.contract_number ?? '-' }}
+                                <td class="px-3 py-4">
+                                    {{ lot.contract_number ?? '-' }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-3 py-4">
                                     {{ lot.owner ?? '-' }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-3 py-4">
                                     {{ lot.address ?? '-' }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-3 py-4">
                                     {{ lot.contact ?? '-' }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-3 py-4">
                                     {{ (Number) (lot.price).toAmountFormat() }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-3 py-4">
                                     <div class="space-x-2">
                                         <i @click="editLot(lot)" class="bx bx-edit w-8 h-8 rounded-full bg-green-500 hover:bg-green-700 active:bg-green-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
                                         <i @click="deleteLot(lot)" class="bx bx-trash w-8 h-8 rounded-full bg-red-500 hover:bg-red-700 active:bg-red-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
