@@ -151,7 +151,7 @@ const importLots = () => {
                                     Lot Number
                                 </th>
                                 <th scope="col" class="px-3 py-3">
-                                    Type
+                                    Type/Category
                                 </th>
                                 <th scope="col" class="px-3 py-3">
                                     Contract Number

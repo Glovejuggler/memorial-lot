@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lot;
 use App\Models\Block;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreBlockRequest;
 
 class BlockController extends Controller
@@ -61,7 +62,13 @@ class BlockController extends Controller
         return inertia('Blocks/Show', [
             'block' => $block,
             'lots' => $lots,
-            'filters' => $request->only(['search', 'type'])
+            'filters' => $request->only(['search', 'type']),
+            'available' => Lot::whereBelongsTo($block)->count(),
+            'occupied' => Lot::whereBelongsTo($block)->whereNotNull('owner')->count(),
+            'tallies' => Lot::whereBelongsTo($block)
+                            ->select('type', DB::raw('count(*) as count'), DB::raw('count(case when owner is not null then 1 end) as occupied_lots'))
+                            ->groupBy('type')
+                            ->get(),
         ]);
     }
 

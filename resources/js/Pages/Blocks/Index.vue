@@ -80,6 +80,9 @@ const submitNewBlock = () => {
                                 <th scope="col" class="px-6 py-3">
                                     Available Lots
                                 </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Total Lots
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,6 +98,9 @@ const submitNewBlock = () => {
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ block.lots_count - block.acquired_lots_count }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ block.lots_count }}
                                 </td>
                             </tr>
                         </tbody>

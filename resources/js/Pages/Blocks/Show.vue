@@ -11,6 +11,9 @@ const props = defineProps({
     errors: Object,
     lots: Object,
     filters: Object,
+    occupied: Number,
+    available: Number,
+    tallies: Object,
 })
 
 const createLotModal = ref(false)
@@ -119,13 +122,24 @@ watch(
 
     <div class="py-8">
         <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-md dark:text-white border dark:border-gray-700 shadow-sm">
-                <p class="text-3xl font-bold mb-4">{{ block.name }}</p>
-                <p class="text-sm">Block number: {{ block.block_number }}</p>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-md dark:text-white border dark:border-gray-700 shadow-sm grid grid-cols-3 gap-2">
+                <div>
+                    <p class="text-3xl font-bold mb-4">{{ block.name }}</p>
+                    <p class="text-sm">Block number: {{ block.block_number }}</p>
+    
+                    <div class="flex mt-4 space-x-2">
+                        <button @click="editBlockModal = true" class="rounded-md text-white px-4 text-sm bg-green-500 hover:bg-green-700 active:bg-green-900 ease-in-out duration-200">Edit</button>
+                        <button @click="deleteBlockModal = true" class="rounded-md text-white px-4 text-sm bg-red-500 hover:bg-red-700 active:bg-red-900 ease-in-out duration-200">Delete</button>
+                    </div>
+                </div>
 
-                <div class="flex mt-4 space-x-2">
-                    <button @click="editBlockModal = true" class="rounded-md text-white px-4 text-sm bg-green-500 hover:bg-green-700 active:bg-green-900 ease-in-out duration-200">Edit</button>
-                    <button @click="deleteBlockModal = true" class="rounded-md text-white px-4 text-sm bg-red-500 hover:bg-red-700 active:bg-red-900 ease-in-out duration-200">Delete</button>
+                <div>
+                    <p>Availalble lots: {{ available }}</p>
+                    <p>Occupied lots: {{ occupied }}</p>
+                </div>
+
+                <div>
+                    <p v-for="tally in tallies">{{ `${tally.type ?? 'Uncategorized'}: ${tally.count}` }}</p>
                 </div>
             </div>
 
@@ -153,7 +167,7 @@ watch(
                                     Lot Number
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Type
+                                    Type/Category
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Contract Number
