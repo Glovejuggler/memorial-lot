@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LotsExport;
 use App\Models\Lot;
 use App\Models\Block;
 use App\Imports\LotsImport;
@@ -18,14 +19,15 @@ class LotController extends Controller
     {
         $lots = Lot::query()
                         ->with('block')
-                        ->filter($request->only(['search', 'type']))
+                        ->filter($request->only(['search', 'type', 'status']))
                         ->orderBy('block_id')
                         ->get();
 
         return inertia('Lots/Index', [
             'lots' => $lots,
-            'filters' => $request->only(['search', 'type']),
+            'filters' => $request->only(['search', 'type', 'status']),
             'blocks' => Block::orderBy('block_number')->get(),
+            'lot_types' => Lot::distinct('type')->pluck('type'),
         ]);
     }
 
@@ -99,5 +101,13 @@ class LotController extends Controller
         // }
 
         return redirect()->back();
+    }
+
+    /**
+     * Export
+     */
+    public function export()
+    {
+        return Excel::download(new LotsExport, 'Lots - '.now()->format('F j, Y').'.xlsx');
     }
 }

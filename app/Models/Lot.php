@@ -29,11 +29,17 @@ class Lot extends Model
                             $q->where('block_number','like', "%$search%");
                         });
             });
+        })->when($filters['status'] ?? null, function ($query, $status) {
+            if ($status == 'sold') {
+                $query->where('status', 'Sold');
+            } elseif ($status == 'installment') {
+                $query->where('status', 'Installment');
+            } elseif ($status == 'available') {
+                $query->whereNull('status');
+            }
         })->when($filters['type'] ?? null, function ($query, $type) {
-            if ($type == 'occupied') {
-                $query->whereNotNull('owner');
-            } elseif ($type == 'available') {
-                $query->whereNull('owner');
+            if ($type != 'any') {
+                $query->where('type', $type == 'none' ? null : $type);
             }
         });
     }

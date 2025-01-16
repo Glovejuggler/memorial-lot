@@ -11,12 +11,14 @@ const props = defineProps({
     lots: Object,
     filters: Object,
     errors: Object,
+    lot_types: Object,
 })
 
 // Search lot
 const searchForm = ref({
     search: props.filters.search,
-    type: props.filters.type ?? '',
+    status: props.filters.status ?? '',
+    type: props.filters.type ?? 'any',
 })
 
 watch(
@@ -128,12 +130,18 @@ const importLots = () => {
                     <span class="dark:text-white text-lg font-bold mr-4">Lots</span>
                     <button @click="createLotModal = true" class="bg-blue-500 px-4 text-sm rounded-md text-white hover:bg-blue-700 active:bg-blue-800 ease-in-out duration-200">Add new</button>
                     <button @click="importFileInput.click()" class="bg-green-500 px-4 text-sm rounded-md text-white hover:bg-green-700 active:bg-green-800 ease-in-out duration-200 ml-4">Import</button>
+                    <a :href="route('lots.export')" class="bg-yellow-500 px-4 text-sm rounded-md text-white hover:bg-yellow-700 active:bg-yellow-800 ease-in-out duration-200 ml-4">Export</a>
                 </div>
                 <div>
                     <Select v-model="searchForm.type">
+                        <option value="any">Any</option>
+                        <option v-for="type in lot_types" :value="type ?? 'none'">{{ type ?? 'Uncategorized' }}</option>
+                    </Select>
+                    <Select v-model="searchForm.status">
                         <option value="">All</option>
                         <option value="available">Available</option>
-                        <option value="occupied">Occupied</option>
+                        <option value="sold">Sold</option>
+                        <option value="installment">Installment</option>
                     </Select>
                     <TextInput v-model="searchForm.search" type="text" class="lg:w-96 lg:mt-0 w-full" placeholder="Search"/>
                 </div>
@@ -144,65 +152,71 @@ const importLots = () => {
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-100">
                         <thead class="text-xs text-gray-700 dark:text-gray-200 uppercase bg-gray-50 dark:bg-gray-800">
                             <tr>
-                                <th scope="col" class="px-3 py-3">
+                                <th scope="col" class="p-3">
                                     Block Number
                                 </th>
-                                <th scope="col" class="px-3 py-3">
+                                <th scope="col" class="p-3">
                                     Lot Number
                                 </th>
-                                <th scope="col" class="px-3 py-3">
+                                <th scope="col" class="p-3">
                                     Type/Category
                                 </th>
-                                <th scope="col" class="px-3 py-3">
+                                <th scope="col" class="p-3">
+                                    Status
+                                </th>
+                                <th scope="col" class="p-3">
                                     Contract Number
                                 </th>
-                                <th scope="col" class="px-3 py-3">
+                                <th scope="col" class="p-3">
                                     Owner
                                 </th>
-                                <th scope="col" class="px-3 py-3">
+                                <th scope="col" class="p-3">
                                     Address
                                 </th>
-                                <th scope="col" class="px-3 py-3">
+                                <th scope="col" class="p-3">
                                     Contact no.
                                 </th>
-                                <th scope="col" class="px-3 py-3">
+                                <th scope="col" class="p-3">
                                     Price
                                 </th>
-                                <th scope="col" class="px-3 py-3">
+                                <th scope="col" class="p-3">
                                     Actions
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="lot in lots" class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 last:border-none hover:bg-black/10 cursor-pointer">
-                                <th scope="row" class="px-3 py-4 font-medium text-gray-900 dark:text-gray-200 whitespace-nowrap">
+                                <th scope="row" class="px-2 py-4 font-medium text-gray-900 dark:text-gray-200 whitespace-nowrap">
                                     {{ lot.block.block_number ?? '-' }}
                                 </th>
-                                <td class="px-3 py-4">
+                                <td class="px-2 py-4">
                                     {{ lot.lot_number }}
                                 </td>
-                                <td class="px-3 py-4">
+                                <td class="px-2 py-4">
                                     {{ lot.type ?? '-' }}
                                 </td>
-                                <td class="px-3 py-4">
+                                <td class="px-2 py-4">
+                                    <span class="text-xs rounded-lg text-white px-2" :class="{'bg-blue-500': !lot.status, 'bg-yellow-500': lot.status == 'Installment', 'bg-green-500': lot.status == 'Sold'}">{{ lot.status ?? 'Available' }}</span>
+                                </td>
+                                <td class="px-2 py-4">
                                     {{ lot.contract_number ?? '-' }}
                                 </td>
-                                <td class="px-3 py-4">
+                                <td class="px-2 py-4">
                                     {{ lot.owner ?? '-' }}
                                 </td>
-                                <td class="px-3 py-4">
+                                <td class="px-2 py-4">
                                     {{ lot.address ?? '-' }}
                                 </td>
-                                <td class="px-3 py-4">
+                                <td class="px-2 py-4">
                                     {{ lot.contact ?? '-' }}
                                 </td>
-                                <td class="px-3 py-4">
+                                <td class="px-2 py-4">
                                     {{ (Number) (lot.price).toAmountFormat() }}
                                 </td>
-                                <td class="px-3 py-4">
-                                    <div class="space-x-2">
-                                        <i @click="editLot(lot)" class="bx bx-edit w-8 h-8 rounded-full bg-green-500 hover:bg-green-700 active:bg-green-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
-                                        <i @click="deleteLot(lot)" class="bx bx-trash w-8 h-8 rounded-full bg-red-500 hover:bg-red-700 active:bg-red-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
+                                <td class="px-2 py-4">
+                                    <div class="space-x-1">
+                                        <i @click="editLot(lot)" class="bx bx-edit w-6 h-6 rounded-full bg-green-500 hover:bg-green-700 active:bg-green-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
+                                        <i @click="deleteLot(lot)" class="bx bx-trash w-6 h-6 rounded-full bg-red-500 hover:bg-red-700 active:bg-red-900 ease-in-out duration-200 inline-flex justify-center items-center"></i>
                                     </div>
                                 </td>
                             </tr>
@@ -227,13 +241,7 @@ const importLots = () => {
             <span v-if="errors.block_id" class="text-sm text-red-500">{{ errors.block_id }}</span>
 
             <InputLabel class="mt-4" for="type" value="Type/Category"/>
-            <Select @keyup.enter="submitNewLot" id="type" class="mt-1 block w-full" v-model="newLot.type">
-                <option value="" selected hidden disabled>Choose one</option>
-                <option value="Regular">Regular</option>
-                <option value="Premium">Premium</option>
-                <option value="Super Premium">Super Premium</option>
-                <option value="Super Special Premium">Super Special Premium</option>
-            </Select>
+            <TextInput list="lot_types" @keyup.enter="submitNewLot" id="type" class="mt-1 block w-full" v-model="newLot.type"/>
             <span v-if="errors.type" class="text-sm text-red-500">{{ errors.type }}</span>
 
             <InputLabel class="mt-4" for="lot_number" value="Lot number"/>
@@ -277,13 +285,7 @@ const importLots = () => {
             <span v-if="errors.block_id" class="text-sm text-red-500">{{ errors.block_id }}</span>
 
             <InputLabel class="mt-4" for="type" value="Type/Category"/>
-            <Select @keyup.enter="submitEditLot" id="type" class="mt-1 block w-full" v-model="editLotForm.type">
-                <option value="" selected hidden disabled>Choose one</option>
-                <option value="Regular">Regular</option>
-                <option value="Premium">Premium</option>
-                <option value="Super Premium">Super Premium</option>
-                <option value="Super Special Premium">Super Special Premium</option>
-            </Select>
+            <TextInput list="lot_types" @keyup.enter="submitEditLot" id="type" class="mt-1 block w-full" v-model="editLotForm.type"/>
             <span v-if="errors.type" class="text-sm text-red-500">{{ errors.type }}</span>
 
             <InputLabel class="mt-4" for="lot_number" value="Lot number"/>
@@ -335,4 +337,9 @@ const importLots = () => {
             </div>
         </div>
     </Modal>
+
+    <!-- Lot Types List -->
+    <datalist id="lot_types">
+        <option v-for="type in lot_types" :value="type">{{ type }}</option>
+    </datalist>
 </template>

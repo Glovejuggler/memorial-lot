@@ -63,12 +63,20 @@ class BlockController extends Controller
             'block' => $block,
             'lots' => $lots,
             'filters' => $request->only(['search', 'type']),
-            'available' => Lot::whereBelongsTo($block)->count(),
-            'occupied' => Lot::whereBelongsTo($block)->whereNotNull('owner')->count(),
-            'tallies' => Lot::whereBelongsTo($block)
-                            ->select('type', DB::raw('count(*) as count'), DB::raw('count(case when owner is not null then 1 end) as occupied_lots'))
+            'tallies' => [
+                'type' => Lot::whereBelongsTo($block)
+                            ->select('type',
+                                    DB::raw('count(*) as count'),
+                                    DB::raw('count(case when status = "Sold" then 1 end) as sold_lots'),
+                                    DB::raw('count(case when status = "Installment" then 1 end) as installment_lots'))
                             ->groupBy('type')
                             ->get(),
+                'status' => Lot::whereBelongsTo($block)
+                            ->select('status', DB::raw('count(*) as count'))
+                            ->groupBy('status')
+                            ->get(),
+            ],
+            'lot_types' => Lot::whereBelongsTo($block)->distinct('type')->pluck('type'),
         ]);
     }
 

@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/lot/{lot}', [LotController::class, 'update'])->name('lots.update');
     Route::delete('/lot/{lot}', [LotController::class, 'destroy'])->name('lots.destroy');
     Route::post('/lot/import', [LotController::class, 'import'])->name('lots.import');
+    Route::get('/lot/export', [LotController::class, 'export'])->name('lots.export');
 });
 
 require __DIR__.'/auth.php';
