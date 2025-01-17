@@ -170,9 +170,10 @@ watch(
             <div class="py-4 flex justify-between items-center">
                 <div>
                     <span class="dark:text-white text-lg font-bold mr-4">Lots</span>
-                    <button @click="createLotModal = true" class="bg-blue-500 px-4 text-sm rounded-md text-white hover:bg-blue-700 active:bg-blue-800 ease-in-out duration-200">Add new</button>
+                    <button @click="createLotModal = true" class="bg-blue-500 px-4 mr-4 text-sm rounded-md text-white hover:bg-blue-700 active:bg-blue-800 ease-in-out duration-200">Add new</button>
                     <a :href="route('blocks.export', block)" class="bg-yellow-500 px-4 text-sm rounded-md text-white hover:bg-yellow-700 active:bg-yellow-800 ease-in-out duration-200">Export</a>
                 </div>
+                
                 <div>
                     <Select v-model="searchForm.type">
                         <option value="">All</option>

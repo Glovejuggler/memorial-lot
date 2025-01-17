@@ -66,13 +66,14 @@ class LotsImport implements ToModel, WithValidation, WithHeadingRow, WithBatchIn
     {
         return [
             '*.blk' => ['required', 'exists:blocks,block_number'],
-            '*.cn' => ['nullable','unique:lots,contract_number'],
+            '*.cn' => ['nullable'],
             '*.name' => ['nullable'],
             '*.lot' => ['required'],
             '*.contact' => ['nullable'],
             '*.address' => ['nullable'],
             '*.price' => ['nullable'],
             '*.type' => ['nullable'],
+            '*.status' => ['nullable'],
         ];
     }
 

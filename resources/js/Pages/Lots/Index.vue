@@ -196,7 +196,7 @@ const importLots = () => {
                                     {{ lot.type ?? '-' }}
                                 </td>
                                 <td class="px-2 py-4">
-                                    <span class="text-xs rounded-lg text-white px-2" :class="{'bg-blue-500': !lot.status, 'bg-yellow-500': lot.status.toUpperCase() == 'INSTALLMENT', 'bg-green-500': lot.status.toUpperCase() == 'SOLD'}">{{ lot.status ?? 'Available' }}</span>
+                                    <span class="text-xs rounded-lg text-white px-2" :class="{'bg-blue-500': !lot.status, 'bg-yellow-500': (lot.status)?.toUpperCase() == 'INSTALLMENT', 'bg-green-500': (lot.status)?.toUpperCase() == 'SOLD'}">{{ lot.status ?? 'Available' }}</span>
                                 </td>
                                 <td class="px-2 py-4">
                                     {{ lot.contract_number ?? '-' }}
@@ -247,6 +247,14 @@ const importLots = () => {
             <InputLabel class="mt-4" for="lot_number" value="Lot number"/>
             <TextInput @keyup.enter="submitNewLot" id="lot_number" type="text" class="mt-1 block w-full" v-model="newLot.lot_number"/>
             <span v-if="errors.lot_number" class="text-sm text-red-500">{{ errors.lot_number }}</span>
+
+            <InputLabel class="mt-4" for="status" value="Status"/>
+            <Select @keyup.enter="submitNewLot" id="status" type="text" class="mt-1 block w-full" v-model="newLot.status">
+                <option value="">Available</option>
+                <option value="Installment">Installment</option>
+                <option value="Sold">Sold</option>
+            </Select>
+            <span v-if="errors.status" class="text-sm text-red-500">{{ errors.status }}</span>
             
             <InputLabel class="mt-4" for="price" value="Price"/>
             <TextInput @keyup.enter="submitNewLot" id="price" type="number" class="mt-1 block w-full" v-model="newLot.price"/>
@@ -291,6 +299,14 @@ const importLots = () => {
             <InputLabel class="mt-4" for="lot_number" value="Lot number"/>
             <TextInput @keyup.enter="submitEditLot" id="lot_number" type="text" class="mt-1 block w-full" v-model="editLotForm.lot_number"/>
             <span v-if="errors.lot_number" class="text-sm text-red-500">{{ errors.lot_number }}</span>
+
+            <InputLabel class="mt-4" for="status" value="Status"/>
+            <Select @keyup.enter="submitEditLot" id="status" type="text" class="mt-1 block w-full" v-model="editLotForm.status">
+                <option value="">Available</option>
+                <option value="Installment">Installment</option>
+                <option value="Sold">Sold</option>
+            </Select>
+            <span v-if="errors.status" class="text-sm text-red-500">{{ errors.status }}</span>
             
             <InputLabel class="mt-4" for="price" value="Price"/>
             <TextInput @keyup.enter="submitEditLot" id="price" type="number" class="mt-1 block w-full" v-model="editLotForm.price"/>

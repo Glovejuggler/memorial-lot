@@ -34,8 +34,9 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard', [
         'blocks' => Block::count(),
-        'lots_sold' => Lot::whereNotNull('owner')->count(),
-        'lots_available' => Lot::whereNull('owner')->count(),
+        'lots_sold' => Lot::where('status', 'like', "%sold%")->count(),
+        'lots_installment' => Lot::where('status', 'like', "%installment%")->count(),
+        'lots_available' => Lot::whereNull('status')->count(),
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 

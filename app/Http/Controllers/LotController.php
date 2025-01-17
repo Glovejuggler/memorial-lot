@@ -96,9 +96,9 @@ class LotController extends Controller
         $import = new LotsImport;
         $import->import($request->file('file'));
 
-        // if ($import->failures()) {
-        //     dd($import->failures());
-        // }
+        if ($import->failures()) {
+            dd($import->failures());
+        }
 
         return redirect()->back();
     }

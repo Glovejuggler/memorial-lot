@@ -5,6 +5,7 @@ const props = defineProps({
     blocks: Number,
     lots_sold: Number,
     lots_available: Number,
+    lots_installment: Number,
 })
 </script>
 
@@ -21,6 +22,10 @@ const props = defineProps({
                 <div class="bg-white dark:bg-gray-800 dark:text-white rounded-md p-4 flex justify-between items-center">
                     <span>Lots sold</span>
                     <span class="font-bold text-2xl">{{ lots_sold }}</span>
+                </div>
+                <div class="bg-white dark:bg-gray-800 dark:text-white rounded-md p-4 flex justify-between items-center">
+                    <span>Lots installment</span>
+                    <span class="font-bold text-2xl">{{ lots_installment }}</span>
                 </div>
                 <div class="bg-white dark:bg-gray-800 dark:text-white rounded-md p-4 flex justify-between items-center">
                     <span>Lots available</span>
