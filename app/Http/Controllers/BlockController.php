@@ -17,9 +17,14 @@ class BlockController extends Controller
     {
         $blocks = Block::query()
                         ->withCount('lots')
-                        ->withCount(['lots as acquired_lots_count' => function ($q) {
-                            $q->whereNotNull('owner');
-                        }])
+                        ->withCount([
+                            'lots as sold_lots_count' => function ($q) {
+                                $q->where('status', 'Sold');
+                            },
+                            'lots as installment_lots_count' => function ($q) {
+                                $q->where('status', 'Installment');
+                            }
+                        ])
                         ->filter($request->only(['search']))
                         ->orderBy('block_number')
                         ->get();
