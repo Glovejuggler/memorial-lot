@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BlockExport;
 use App\Models\Lot;
 use App\Models\Block;
 use Illuminate\Http\Request;
@@ -111,5 +112,13 @@ class BlockController extends Controller
         $block->delete();
 
         return redirect()->route('blocks.index');
+    }
+
+    /**
+     * Export
+     */
+    public function export(Block $block)
+    {
+        return (new BlockExport)->for($block)->download("Block {$block->block_number}.xlsx");
     }
 }

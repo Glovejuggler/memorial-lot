@@ -196,7 +196,7 @@ const importLots = () => {
                                     {{ lot.type ?? '-' }}
                                 </td>
                                 <td class="px-2 py-4">
-                                    <span class="text-xs rounded-lg text-white px-2" :class="{'bg-blue-500': !lot.status, 'bg-yellow-500': lot.status == 'Installment', 'bg-green-500': lot.status == 'Sold'}">{{ lot.status ?? 'Available' }}</span>
+                                    <span class="text-xs rounded-lg text-white px-2" :class="{'bg-blue-500': !lot.status, 'bg-yellow-500': lot.status.toUpperCase() == 'INSTALLMENT', 'bg-green-500': lot.status.toUpperCase() == 'SOLD'}">{{ lot.status ?? 'Available' }}</span>
                                 </td>
                                 <td class="px-2 py-4">
                                     {{ lot.contract_number ?? '-' }}

@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/blocks/{block}', [BlockController::class, 'show'])->name('blocks.show');
     Route::put('/block/{block}', [BlockController::class, 'update'])->name('blocks.update');
     Route::delete('/block/{block}', [BlockController::class, 'destroy'])->name('blocks.destroy');
+    Route::get('/block/{block}/export', [BlockController::class, 'export'])->name('blocks.export');
 
     Route::get('/lots', [LotController::class, 'index'])->name('lots.index');
     Route::post('/lots/store', [LotController::class, 'store'])->name('lots.store');
