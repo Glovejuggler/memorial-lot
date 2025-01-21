@@ -1,0 +1,21 @@
+{
+    "name": "Memorial",
+    "icons": [
+        {
+            "src": "icons/logo.png",
+            "type": "image/png",
+            "sizes": "240x240"
+        }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "screenshots": [
+        {
+            "src": "ss/1.png",
+            "form_factor": "wide",
+            "type": "image/png",
+            "label": "Dashboard",
+            "sizes": "1920x1080"
+        }
+    ]
+}
