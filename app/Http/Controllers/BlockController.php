@@ -62,13 +62,13 @@ class BlockController extends Controller
         $lots = Lot::query()
                     ->whereBelongsTo($block)
                     ->with('block')
-                    ->filter($request->only(['search', 'status']))
+                    ->filter($request->only(['search', 'status', 'type']))
                     ->get();
 
         return inertia('Blocks/Show', [
             'block' => $block,
             'lots' => $lots,
-            'filters' => $request->only(['search', 'status']),
+            'filters' => $request->only(['search', 'status', 'type']),
             'tallies' => [
                 'type' => Lot::whereBelongsTo($block)
                             ->select('type',
