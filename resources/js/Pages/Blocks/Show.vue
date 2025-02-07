@@ -103,7 +103,8 @@ const deleteLot = (lot) => {
 // Search lot
 const searchForm = ref({
     search: props.filters.search,
-    type: props.filters.type ?? '',
+    status: props.filters.status ?? '',
+    type: props.filters.type ?? 'any'
 })
 
 watch(
@@ -176,6 +177,10 @@ watch(
 
                 <div>
                     <Select v-model="searchForm.type">
+                        <option value="any">Any</option>
+                        <option v-for="type in lot_types" :value="type ?? 'none'">{{ type ?? 'Uncategorized' }}</option>
+                    </Select>
+                    <Select v-model="searchForm.status">
                         <option value="">All</option>
                         <option value="available">Available</option>
                         <option value="sold">Sold</option>

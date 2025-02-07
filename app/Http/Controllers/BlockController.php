@@ -62,19 +62,19 @@ class BlockController extends Controller
         $lots = Lot::query()
                     ->whereBelongsTo($block)
                     ->with('block')
-                    ->filter($request->only(['search', 'type']))
+                    ->filter($request->only(['search', 'status']))
                     ->get();
 
         return inertia('Blocks/Show', [
             'block' => $block,
             'lots' => $lots,
-            'filters' => $request->only(['search', 'type']),
+            'filters' => $request->only(['search', 'status']),
             'tallies' => [
                 'type' => Lot::whereBelongsTo($block)
                             ->select('type',
                                     DB::raw('count(*) as count'),
-                                    DB::raw('count(case when status = "Sold" then 1 end) as sold_lots'),
-                                    DB::raw('count(case when status = "Installment" then 1 end) as installment_lots'))
+                                    DB::raw('count(case when status like "%Sold%" then 1 end) as sold_lots'),
+                                    DB::raw('count(case when status like "%Installment%" then 1 end) as installment_lots'))
                             ->groupBy('type')
                             ->get(),
                 'status' => Lot::whereBelongsTo($block)

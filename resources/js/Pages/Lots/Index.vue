@@ -68,6 +68,7 @@ const editLotForm = useForm({
     address: '',
     contact: '',
     type: '',
+    status: '',
 })
 
 const editLot = (lot) => {
@@ -80,6 +81,7 @@ const editLot = (lot) => {
     editLotForm.address = lot.address
     editLotForm.contact = lot.contact
     editLotForm.type = lot.type
+    editLotForm.status = lot.status
 
     editLotModal.value = true
 }
