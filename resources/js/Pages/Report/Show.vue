@@ -35,29 +35,6 @@ watch(
     }
 )
 
-// Create lot
-const createLotModal = ref(false)
-const newLot = useForm({
-    block_id: '',
-    lot_number: '',
-    contract_number: '',
-    price: '',
-    owner: '',
-    address: '',
-    contact: '',
-    type: '',
-    co: '',
-    date_sold: '',
-})
-
-const submitNewLot = () => {
-    newLot.post(route('lots.store'), {
-        preserveState: (page) => Object.keys(page.props.errors).length > 0,
-        preserveScroll: true,
-    })
-}
-
-
 // Edit lot
 const editLotModal = ref(false)
 const editLotForm = useForm({
@@ -111,34 +88,26 @@ const deleteLot = (lot) => {
     deleteLotModal.value = true
 }
 
-// File import
-const importFileInput = ref(null)
-const fileForm = useForm({
-    file: ''
-})
-const importLots = () => {
-    fileForm.post(route('lots.import'), {
-        preserveScroll: true,
-        preserveState: false,
-        onSuccess: () => fileForm.reset('file'),
-        onCancel: () => fileForm.reset('file')
-    })
+const reportLabel = () => {
+    const params = new URLSearchParams(window.location.search)
+
+    const month = params.get('month')
+    const year = params.get('year')
+
+    const date = new Date(year, month - 1)
+    
+    return date.toLocaleString('en-US', {month: 'long', year: 'numeric'})
 }
 </script>
 
 <template>
-    <Head title="Lots"/>
-
-    <input @input="fileForm.file = $event.target.files[0]" @change="importLots" type="file" hidden name="import" id="import" ref="importFileInput" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+    <Head title="Report"/>
 
     <div class="py-8">
         <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
             <div class="py-4 flex justify-between">
                 <div>
-                    <span class="dark:text-white text-lg font-bold mr-4">Lots</span>
-                    <button @click="createLotModal = true" class="bg-blue-500 px-4 text-sm rounded-md text-white hover:bg-blue-700 active:bg-blue-800 ease-in-out duration-200">Add new</button>
-                    <button @click="importFileInput.click()" class="bg-green-500 px-4 text-sm rounded-md text-white hover:bg-green-700 active:bg-green-800 ease-in-out duration-200 ml-4">Import</button>
-                    <a :href="route('lots.export')" class="bg-yellow-500 px-4 text-sm rounded-md text-white hover:bg-yellow-700 active:bg-yellow-800 ease-in-out duration-200 ml-4">Export</a>
+                    <span class="dark:text-white text-lg font-bold mr-4">{{ reportLabel() }}</span>
                 </div>
                 <div>
                     <Select v-model="searchForm.type">
@@ -238,72 +207,6 @@ const importLots = () => {
             </div>
         </div>
     </div>
-
-    <!-- New Lot Modal -->
-    <Modal :show="createLotModal" :closeable="false">
-        <div class="p-4 dark:text-white">
-            <InputLabel for="block_number" value="Block number"/>
-            <Select @keyup.enter="submitNewLot" id="block_number" class="mt-1 block w-full" v-model="newLot.block_id">
-                <option v-for="block in blocks" :value="block.id">{{ `${block.block_number} (${block.name})` }}</option>
-            </Select>
-            <span v-if="errors.block_id" class="text-sm text-red-500">{{ errors.block_id }}</span>
-
-            <InputLabel class="mt-4" for="type" value="Type/Category"/>
-            <TextInput list="lot_types" @keyup.enter="submitNewLot" id="type" class="mt-1 block w-full" v-model="newLot.type"/>
-            <span v-if="errors.type" class="text-sm text-red-500">{{ errors.type }}</span>
-
-            <InputLabel class="mt-4" for="lot_number" value="Lot number"/>
-            <TextInput @keyup.enter="submitNewLot" id="lot_number" type="text" class="mt-1 block w-full" v-model="newLot.lot_number"/>
-            <span v-if="errors.lot_number" class="text-sm text-red-500">{{ errors.lot_number }}</span>
-
-            <InputLabel class="mt-4" for="status" value="Status"/>
-            <Select @keyup.enter="submitNewLot" id="status" type="text" class="mt-1 block w-full" v-model="newLot.status">
-                <option value="">Available</option>
-                <option value="Installment">Installment</option>
-                <option value="Sold">Sold</option>
-            </Select>
-            <span v-if="errors.status" class="text-sm text-red-500">{{ errors.status }}</span>
-            
-            <InputLabel class="mt-4" for="price" value="Price"/>
-            <TextInput @keyup.enter="submitNewLot" id="price" type="number" class="mt-1 block w-full" v-model="newLot.price"/>
-            <span v-if="errors.price" class="text-sm text-red-500 mt-0">{{ errors.price }}</span>
-            
-            <InputLabel class="mt-4" for="contract_number" value="Contract number"/>
-            <TextInput @keyup.enter="submitNewLot" id="contract_number" type="text" class="mt-1 block w-full" v-model="newLot.contract_number"/>
-            <span v-if="errors.contract_number" class="text-sm text-red-500">{{ errors.contract_number }}</span>
-
-            <InputLabel class="mt-4" for="owner" value="Owner"/>
-            <TextInput @keyup.enter="submitNewLot" id="owner" type="text" class="mt-1 block w-full" v-model="newLot.owner"/>
-            <span v-if="errors.owner" class="text-sm text-red-500 mt-0">{{ errors.owner }}</span>
-
-            <InputLabel class="mt-4" for="address" value="Address"/>
-            <TextInput @keyup.enter="submitNewLot" id="address" type="text" class="mt-1 block w-full" v-model="newLot.address"/>
-            <span v-if="errors.address" class="text-sm text-red-500 mt-0">{{ errors.address }}</span>
-
-            <InputLabel class="mt-4" for="contact" value="Contact no."/>
-            <TextInput @keyup.enter="submitNewLot" id="contact" type="text" class="mt-1 block w-full" v-model="newLot.contact"/>
-            <span v-if="errors.contact" class="text-sm text-red-500 mt-0">{{ errors.contact }}</span>
-
-            <div class="grid grid-cols-2 gap-2">
-                <div>
-                    <InputLabel class="mt-4" for="co" value="Certificate of Ownership no."/>
-                    <TextInput @keyup.enter="submitNewLot" id="co" type="text" class="mt-1 block w-full" v-model="newLot.co"/>
-                    <span v-if="errors.co" class="text-sm text-red-500 mt-0">{{ errors.co }}</span>
-                </div>
-
-                <div>
-                    <InputLabel class="mt-4" for="date_sold" value="Date sold"/>
-                    <TextInput @keyup.enter="submitNewLot" id="date_sold" type="date" class="mt-1 block w-full" v-model="newLot.date_sold"/>
-                    <span v-if="errors.date_sold" class="text-sm text-red-500 mt-0">{{ errors.date_sold }}</span>
-                </div>
-            </div>
-
-            <div class="mt-6 flex flex-col-reverse md:flex-row justify-end md:space-x-6">
-                <button @click="createLotModal = false" type="button" class="dark:text-white hover:underline md:mt-0 mt-4">Cancel</button>
-                <button @click="submitNewLot" :disabled="newLot.processing" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 active:bg-green-900 ease-in-out duration-200 disabled:opacity-20">{{ newLot.processing ? 'Processing' : 'Submit' }}</button>
-            </div>
-        </div>
-    </Modal>
 
     <!-- Edit Lot Modal -->
     <Modal :show="editLotModal" @close="editLotModal = false">

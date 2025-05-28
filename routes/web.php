@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\LotController;
 use App\Http\Controllers\BlockController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
 
 /*
@@ -58,6 +59,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/lot/{lot}', [LotController::class, 'destroy'])->name('lots.destroy');
     Route::post('/lot/import', [LotController::class, 'import'])->name('lots.import');
     Route::get('/lot/export', [LotController::class, 'export'])->name('lots.export');
+
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/monthly-report', [ReportController::class, 'show'])->name('reports.show');
 });
 
 require __DIR__.'/auth.php';

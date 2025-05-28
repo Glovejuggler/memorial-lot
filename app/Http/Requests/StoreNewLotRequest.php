@@ -28,12 +28,14 @@ class StoreNewLotRequest extends FormRequest
             'lot_number' => ['required', Rule::unique('lots', 'lot_number')->where(function ($query) {
                 $query->where('block_id', $this->block_id)->whereNot('id', $this->id);
             })],
-            'contract_number' => 'required_with:owner,status',
-            'owner' => 'required_with:contract_number,status',
+            'contract_number' => 'required_with:owner,status,co,date_sold',
+            'owner' => 'required_with:contract_number,status,co,date_sold',
             'address' => 'nullable',
             'contact' => 'nullable',
             'type' => 'nullable',
-            'status' => ['required_with:owner,contract_number', Rule::in(['Sold', 'Installment', null])],
+            'status' => ['required_with:owner,contract_number,co,date_sold', Rule::in(['Sold', 'Installment', null])],
+            'co' => 'required_with:owner,contract_number,status,date_sold',
+            'date_sold' => ['required_with:owner,contract_number,status,co', 'date']
         ];
     }
 }

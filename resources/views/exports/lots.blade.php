@@ -10,6 +10,8 @@
             <th>Address</th>
             <th>Contact</th>
             <th>Price</th>
+            <th>CO</th>
+            <th>Date sold</th>
         </tr>
     </thead>
     <tbody>
@@ -24,6 +26,8 @@
                 <td>{{ $lot->address }}</td>
                 <td>{{ $lot->contact }}</td>
                 <td>{{ $lot->price }}</td>
+                <td>{{ $lot->co }}</td>
+                <td>{{ $lot->date_sold ? $lot->date_sold->format('m/d/y') : "" }}</td>
             </tr>
         @endforeach
     </tbody>

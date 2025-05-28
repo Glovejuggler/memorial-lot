@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use Carbon\Carbon;
 use App\Models\Lot;
 use App\Models\Block;
 use Illuminate\Support\Str;
@@ -44,6 +45,8 @@ class LotsImport implements ToModel, WithValidation, WithHeadingRow, WithBatchIn
                 'address' => isset($row['address']) ? $row['address'] : null,
                 'type' => isset($row['type']) ? $row['type'] : (isset($row['category']) ? $row['category'] : null),
                 'status' => isset($row['status']) ? $row['status'] : null,
+                'co' => isset($row['co']) ? $row['co'] : null,
+                'date_sold' => isset($row['date_sold']) ? Carbon::parse($row['date_sold']) : null,
             ]);
         }
 
@@ -57,6 +60,8 @@ class LotsImport implements ToModel, WithValidation, WithHeadingRow, WithBatchIn
             'address' => isset($row['address']) ? $row['address'] : $existing->address,
             'type' => isset($row['type']) ? $row['type'] : (isset($row['category']) ? $row['category'] : $existing->type),
             'status' => isset($row['status']) ? $row['status'] : $existing->status,
+            'co' => isset($row['co']) ? $row['co'] : $existing->co,
+            'date_sold' => isset($row['date_sold']) ? Carbon::parse($row['date_sold']) : $existing->date_sold,
         ]);
 
         return null;
@@ -74,6 +79,8 @@ class LotsImport implements ToModel, WithValidation, WithHeadingRow, WithBatchIn
             '*.price' => ['nullable'],
             '*.type' => ['nullable'],
             '*.status' => ['nullable'],
+            '*.co' => ['nullable'],
+            '*.date_sold' => ['nullable'],
         ];
     }
 

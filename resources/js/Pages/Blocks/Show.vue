@@ -39,6 +39,8 @@ const newLot = useForm({
     owner: '',
     address: '',
     contact: '',
+    co: '',
+    date_sold: '',
 })
 
 const editLotForm = useForm({
@@ -52,6 +54,8 @@ const editLotForm = useForm({
     address: '',
     contact: '',
     id: '',
+    co: '',
+    date_sold: ''
 })
 
 const submitNewLot = () => {
@@ -79,6 +83,8 @@ const editLot = (lot) => {
     editLotForm.block_id = props.block.id
     editLotForm.address = lot.address
     editLotForm.contact = lot.contact
+    editLotForm.co = lot.co
+    editLotForm.date_sold = lot.date_sold
 
     editLotModal.value = true
 }
@@ -307,6 +313,20 @@ watch(
             <TextInput @keyup.enter="submitNewLot" id="contact" type="text" class="mt-1 block w-full" v-model="newLot.contact"/>
             <span v-if="errors.contact" class="text-sm text-red-500 mt-0">{{ errors.contact }}</span>
 
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <InputLabel class="mt-4" for="co" value="Certificate of Ownership no."/>
+                    <TextInput @keyup.enter="submitNewLot" id="co" type="text" class="mt-1 block w-full" v-model="newLot.co"/>
+                    <span v-if="errors.co" class="text-sm text-red-500 mt-0">{{ errors.co }}</span>
+                </div>
+
+                <div>
+                    <InputLabel class="mt-4" for="date_sold" value="Date sold"/>
+                    <TextInput @keyup.enter="submitNewLot" id="date_sold" type="date" class="mt-1 block w-full" v-model="newLot.date_sold"/>
+                    <span v-if="errors.date_sold" class="text-sm text-red-500 mt-0">{{ errors.date_sold }}</span>
+                </div>
+            </div>
+
             <div class="mt-6 flex flex-col-reverse md:flex-row justify-end md:space-x-6">
                 <button @click="createLotModal = false" type="button" class="dark:text-white hover:underline md:mt-0 mt-4">Cancel</button>
                 <button @click="submitNewLot" :disabled="newLot.processing" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-700 active:bg-green-900 ease-in-out duration-200 disabled:opacity-20">{{ newLot.processing ? 'Processing' : 'Submit' }}</button>
@@ -384,6 +404,20 @@ watch(
             <InputLabel class="mt-4" for="contact" value="Contact no."/>
             <TextInput @keyup.enter="submitEditLot" id="contact" type="text" class="mt-1 block w-full" v-model="editLotForm.contact"/>
             <span v-if="errors.contact" class="text-sm text-red-500 mt-0">{{ errors.contact }}</span>
+
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <InputLabel class="mt-4" for="co" value="Certificate of Ownership no."/>
+                    <TextInput @keyup.enter="submitEditLot" id="co" type="text" class="mt-1 block w-full" v-model="editLotForm.co"/>
+                    <span v-if="errors.co" class="text-sm text-red-500 mt-0">{{ errors.co }}</span>
+                </div>
+
+                <div>
+                    <InputLabel class="mt-4" for="date_sold" value="Date sold"/>
+                    <TextInput @keyup.enter="submitEditLot" id="date_sold" type="date" class="mt-1 block w-full" v-model="editLotForm.date_sold"/>
+                    <span v-if="errors.date_sold" class="text-sm text-red-500 mt-0">{{ errors.date_sold }}</span>
+                </div>
+            </div>
 
             <div class="mt-6 flex flex-col-reverse md:flex-row justify-end md:space-x-6">
                 <button @click="editLotModal = false" type="button" class="dark:text-white hover:underline md:mt-0 mt-4">Cancel</button>

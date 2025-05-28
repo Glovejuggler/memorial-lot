@@ -11,7 +11,11 @@ class Lot extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['lot_number', 'contract_number', 'block_id', 'price', 'owner', 'id', 'address', 'contact', 'type', 'status'];
+    protected $fillable = ['lot_number', 'contract_number', 'block_id', 'price', 'owner', 'id', 'address', 'contact', 'type', 'status', 'co', 'date_sold'];
+
+    protected $casts = [
+        'date_sold' => 'date'
+    ];
 
     public function block(): BelongsTo
     {
@@ -25,6 +29,7 @@ class Lot extends Model
                 $query->where('contract_number', 'like', "%$search%")
                         ->orWhere('lot_number', 'like', "%$search%")
                         ->orWhere('owner', 'like', "%$search%")
+                        ->orWhere('co', "$search")
                         ->orWhereHas('block', function ($q) use ($search) {
                             $q->where('block_number','like', "%$search%");
                         });
