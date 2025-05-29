@@ -12,6 +12,7 @@ const props = defineProps({
     filters: Object,
     errors: Object,
     lot_types: Object,
+    tallies: Object,
 })
 
 // Search lot
@@ -98,6 +99,8 @@ const reportLabel = () => {
     
     return date.toLocaleString('en-US', {month: 'long', year: 'numeric'})
 }
+
+const total_sales = props.lots.reduce((sum, lot) => sum + (Number(lot.price) || 0), 0);
 </script>
 
 <template>
@@ -105,10 +108,33 @@ const reportLabel = () => {
 
     <div class="py-8">
         <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
-            <div class="py-4 flex justify-between">
-                <div>
-                    <span class="dark:text-white text-lg font-bold mr-4">{{ reportLabel() }}</span>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-md dark:text-white border dark:border-gray-700 shadow-sm">
+                <div class="lg:grid grid-cols-3 gap-2">
+                    <div>
+                        <span class="block font-bold text-xl">{{ reportLabel() }} Sales Report</span>
+                        <span class="block">Total Lots sold: <b>{{ lots.length }}</b></span>
+                        <span class="block">Total sales: <b>{{ total_sales.toLocaleString() }}</b></span>
+                    </div>
+                    <div class="mt-4 lg:mt-0">
+                        <table class="table table-fixed text-left text-sm" v-if="tallies.type.length">
+                            <thead>
+                                <tr class="text-xs font-bold">
+                                    <th class="pr-4">Type/Category</th>
+                                    <th class="pr-4">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="tally in tallies.type">
+                                    <td class="pr-4 py-1">{{ tally.type ?? 'Uncategorized' }}</td>
+                                    <td class="pr-4 py-1">{{ tally.count }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+            </div>
+
+            <div class="py-4 flex justify-end">
                 <div>
                     <Select v-model="searchForm.type">
                         <option value="any">Any</option>

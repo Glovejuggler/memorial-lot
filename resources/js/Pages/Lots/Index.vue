@@ -46,6 +46,7 @@ const newLot = useForm({
     address: '',
     contact: '',
     type: '',
+    status: '',
     co: '',
     date_sold: '',
 })
