@@ -34,7 +34,7 @@ class StoreNewLotRequest extends FormRequest
             'contact' => 'nullable',
             'type' => 'nullable',
             'status' => ['required_with:owner,contract_number,co', Rule::in(['Sold', 'Installment', null])],
-            'co' => 'required_with:owner,contract_number,status',
+            'co' => 'required_if:status,Sold',
             'date_sold' => ['required_if:status,Sold', 'date']
         ];
     }

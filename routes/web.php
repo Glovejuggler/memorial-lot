@@ -64,4 +64,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/monthly-report', [ReportController::class, 'show'])->name('reports.show');
 });
 
+Route::get('/contact', function() {
+    return view('contact');
+});
+
 require __DIR__.'/auth.php';

@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import Payment from '@/Components/Payment.vue';
 
 const props = defineProps({
     months: Object
@@ -15,6 +16,8 @@ const getMonthDate = (month) => {
 
     <div class="py-8">
         <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+            <Payment class="mb-8"/>
+            
             <div class="bg-white dark:bg-gray-800 p-6 rounded-md dark:text-white border dark:border-gray-700 shadow-sm">
                 <span class="font-bold text-lg">Monthly Report</span>
                 

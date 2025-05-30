@@ -5,6 +5,7 @@ import Select from '@/Components/Select.vue';
 import Modal from '@/Components/Modal.vue';
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
+import Payment from '@/Components/Payment.vue';
 
 const props = defineProps({
     blocks: Object,
@@ -65,7 +66,7 @@ const editLot = (lot) => {
     editLotForm.type = lot.type
     editLotForm.status = lot.status
     editLotForm.co = lot.co
-    editLotForm.date_sold = lot.date_sold
+    editLotForm.date_sold = new Date(lot.date_sold).toLocaleDateString('sv-SE')
 
     editLotModal.value = true
 }
@@ -108,6 +109,8 @@ const total_sales = props.lots.reduce((sum, lot) => sum + (Number(lot.price) || 
 
     <div class="py-8">
         <div class="max-w-screen-2xl mx-auto px-6 lg:px-8">
+            <Payment/>
+            
             <div class="bg-white dark:bg-gray-800 p-6 rounded-md dark:text-white border dark:border-gray-700 shadow-sm">
                 <div class="lg:grid grid-cols-3 gap-2">
                     <div>
